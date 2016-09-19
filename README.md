@@ -146,7 +146,7 @@ Install a specific version:
 
 ```puppet
 class { 'mattermost':
-  version => '2.1.0',
+  version => '3.4.0',
 }
 ```
 
@@ -154,7 +154,7 @@ Install a release candidate:
 
 ```puppet
 class { 'mattermost':
-  version => '3.3.0-rc2',
+  version => '3.5.0-rc2',
 }
 ```
 
@@ -162,7 +162,7 @@ Download from an internal server:
 
 ```puppet
 class { 'mattermost':
-  version  => '3.2.0',
+  version  => '3.4.0',
   full_url => 'http://intranet.bigcorp.com/packages/mattermost.tar.gz',
 }
 ```
@@ -174,7 +174,7 @@ just specify the new version when it has been released, for example:
 
 ```puppet
 class { 'mattermost':
-  version => '3.2.0',
+  version => '3.4.0',
 }
 ```
 
@@ -182,17 +182,14 @@ On the next Puppet run, the new version will be downloaded and installed; the
 friendly symbolic link will be changed to point at the new installation
 directory and the service will be refreshed.
 
-**Note 1:**  The Mattermost application supports sequential upgrades (for
-example, from 3.1.0 &rarr; 3.2.0). Do not try to skip versions.
+**Note 1:**  The Mattermost application supports certain upgrade paths only.
+Please see the [upgrade guide](https://docs.mattermost.com/administration/upgrade.html)
 
-**Note 2:** Upgrade from a 2.X.X release to a 3.X.X release requires
-[manual steps](http://www.mattermost.org/upgrade-to-3-0/) 
-
-**Note 3:** Always
+**Note 2:** Always
 [backup your data](http://docs.mattermost.com/install/upgrade-guide.html)
 before upgrades.
 
-**Note 4:** For a seamless upgrade you should store your file data outside of
+**Note 3:** For a seamless upgrade you should store your file data outside of
 the Mattermost installation directory so that your uploaded files are still
 accessible after each upgrade. For example:
 
@@ -233,20 +230,20 @@ The base URL to download the Mattermost server release archive. Defaults to
 
 ##### `version`
 
-The version of Mattermost server to install. Defaults to `3.2.0`.
+The version of Mattermost server to install. Defaults to `3.4.0`.
 
 ##### `file_name`
 
 The filename of the remote Mattermost server release archive.
 Defaults to `mattermost-team-${version}-linux-amd64.tar.gz`, so with the
-default `version`, this will be `mattermost-team-3.2.0-linux-amd64.tar.gz`.
+default `version`, this will be `mattermost-team-3.4.0-linux-amd64.tar.gz`.
 
 ##### `full_url`
 
 The full URL of the Mattermost server release archive. Defaults to
 `${base_url}/${version}/${filename}`, so with the default `base_url`,
 `version` and `file_name`, this will be:
-`https://releases.mattermost.com/3.2.0/mattermost-team-3.2.0-linux-amd64.tar.gz`.
+`https://releases.mattermost.com/3.4.0/mattermost-team-3.4.0-linux-amd64.tar.gz`.
 
 **Please note:** If you set `full_url` you should also set `version`
 to match the version of Mattermost server you are installing.
