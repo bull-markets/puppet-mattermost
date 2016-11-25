@@ -1,6 +1,7 @@
 # See README.md.
 class mattermost (
   $base_url         = $mattermost::params::base_url,
+  $edition          = $mattermost::params::edition,
   $version          = $mattermost::params::version,
   $filename         = $mattermost::params::filename,
   $full_url         = $mattermost::params::full_url,
@@ -25,6 +26,7 @@ class mattermost (
 ) inherits mattermost::params {
 
   validate_string($base_url)
+  validate_re($edition,['^team$','^enterprise$'])
   validate_string($version)
   validate_string($filename)
   validate_string($full_url)

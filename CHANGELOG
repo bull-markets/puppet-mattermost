@@ -1,3 +1,7 @@
+2016-11-25 Richard Grainger <grainger@gmail.com> - 1.5.0
+* Support Mattermost Enterprise edition
+* Default to Mattermost 3.5.1
+
 2016-09-19 Richard Grainger <grainger@gmail.com> - 1.4.1
 * Support Mattermost 3.4.0
 * Move source code to gitlab.com
