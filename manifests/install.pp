@@ -1,10 +1,22 @@
 # See README.md.
 class mattermost::install inherits mattermost {
-  $filename = regsubst(
-    $mattermost::filename,
-    '__VERSION__',
-    $mattermost::version
-  )
+  if $mattermost::edition == 'team' {
+    $filename = regsubst(
+      $mattermost::filename,
+      '__EDITION__-__VERSION__',
+      "${mattermost::edition}-${mattermost::version}"
+    )
+    $download_filename = "mattermost_team_v${mattermost::version}.tar.gz"
+  }
+  else {
+    $filename = regsubst(
+      $mattermost::filename,
+      '__EDITION__-__VERSION__',
+      $mattermost::version
+    )
+    $download_filename = "mattermost_enterprise_v${mattermost::version}.tar.gz"
+  }
+  
   $full_url = regsubst(
     $mattermost::full_url,
     '__PLACEHOLDER__',
@@ -24,7 +36,7 @@ class mattermost::install inherits mattermost {
     ''      => undef,
     default => $mattermost::service_mode,
   }
-  staging::file{ "mattermost_v${mattermost::version}.tar.gz":
+  staging::file{ $download_filename:
     source => $full_url,
   }
   if ($mattermost::create_user) {
@@ -46,13 +58,13 @@ class mattermost::install inherits mattermost {
     require => [User[$mattermost::user],
                 Group[$mattermost::group], ],
   }
-  staging::extract{ "mattermost_v${mattermost::version}.tar.gz":
+  staging::extract{ $download_filename:
     target  => $dir,
     strip   => '1',
     user    => $mattermost::user,
     group   => $mattermost::group,
     creates => "${dir}/bin",
-    require => [Staging::File["mattermost_v${mattermost::version}.tar.gz"],
+    require => [Staging::File[$download_filename],
                 User[$mattermost::user],
                 Group[$mattermost::group],
                 File[$dir], ],
@@ -74,7 +86,7 @@ class mattermost::install inherits mattermost {
       owner   => $mattermost::user,
       group   => $mattermost::group,
       mode    => '0754',
-      require => Staging::Extract["mattermost_v${mattermost::version}.tar.gz"],
+      require => Staging::Extract[$download_filename],
     }
   }
 }

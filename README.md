@@ -150,11 +150,19 @@ class { 'mattermost':
 }
 ```
 
+Install Enterprise edition:
+
+```puppet
+class { 'mattermost':
+  edition => 'enterprise',
+}
+```
+
 Install a release candidate:
 
 ```puppet
 class { 'mattermost':
-  version => '3.5.0-rc2',
+  version => '3.6.0-rc2',
 }
 ```
 
@@ -162,7 +170,7 @@ Download from an internal server:
 
 ```puppet
 class { 'mattermost':
-  version  => '3.4.0',
+  version  => '3.5.1',
   full_url => 'http://intranet.bigcorp.com/packages/mattermost.tar.gz',
 }
 ```
@@ -174,7 +182,7 @@ just specify the new version when it has been released, for example:
 
 ```puppet
 class { 'mattermost':
-  version => '3.4.0',
+  version => '3.5.1',
 }
 ```
 
@@ -228,22 +236,29 @@ class { 'mattermost':
 The base URL to download the Mattermost server release archive. Defaults to
 `https://releases.mattermost.com`.
 
+##### `edition`
+
+The edition of Mattermost server to install. Defaults to `team`. Valid values
+are `team` and `enterprise`.
+
 ##### `version`
 
-The version of Mattermost server to install. Defaults to `3.4.0`.
+The version of Mattermost server to install. Defaults to `3.5.1`.
 
 ##### `file_name`
 
 The filename of the remote Mattermost server release archive.
-Defaults to `mattermost-team-${version}-linux-amd64.tar.gz`, so with the
-default `version`, this will be `mattermost-team-3.4.0-linux-amd64.tar.gz`.
+Defaults to `mattermost-team-${version}-linux-amd64.tar.gz` (for Team edition)
+or `mattermost-${version}-linux-amd64.tar.gz` (for Enterprise edition),
+so with the default `version`, the default value will be
+`mattermost-team-3.5.1-linux-amd64.tar.gz`.
 
 ##### `full_url`
 
 The full URL of the Mattermost server release archive. Defaults to
-`${base_url}/${version}/${filename}`, so with the default `base_url`,
+`${base_url}/${version}/${filename}`, so with the default `base_url`, `edition`,
 `version` and `file_name`, this will be:
-`https://releases.mattermost.com/3.4.0/mattermost-team-3.4.0-linux-amd64.tar.gz`.
+`https://releases.mattermost.com/3.5.1/mattermost-team-3.5.1-linux-amd64.tar.gz`.
 
 **Please note:** If you set `full_url` you should also set `version`
 to match the version of Mattermost server you are installing.
