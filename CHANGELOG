@@ -1,3 +1,7 @@
+2016-11-28 Richard Grainger <grainger@gmail.com> - 1.5.1
+* Make service_provider a class parameter
+* Improve documentation
+
 2016-11-25 Richard Grainger <grainger@gmail.com> - 1.5.0
 * Support Mattermost Enterprise edition
 * Default to Mattermost 3.5.1
