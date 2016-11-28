@@ -21,6 +21,7 @@ class mattermost (
   $manage_service   = $mattermost::params::manage_service,
   $service_template = $mattermost::params::service_template,
   $service_path     = $mattermost::params::service_path,
+  $service_provider = $mattermost::params::service_provider,
   $purge_conf       = $mattermost::params::purge_conf,
 
 ) inherits mattermost::params {
