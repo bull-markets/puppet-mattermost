@@ -348,6 +348,11 @@ class { 'mattermost':
 }
 ```
 
+##### `purge_conf`
+
+Should the module purge existing settings from Mattermost configuration file?
+Defaults to `false`.
+
 ##### `manage_data_dir`
 
 Should the module ensure Mattermost's data directory exists and has the correct
@@ -371,10 +376,20 @@ operating system?  Defaults to `true`.
 Should the module manage the installed Mattermost server daemon
 (`ensure => 'running'` and `enable => true`)? Defaults to `true`.
 
-##### `purge_conf`
+##### `service_template`
 
-Should the module purge existing settings from Mattermost configuration file?
-Defaults to `false`.
+`ERB` (Embedded RuBy) template to use for the service definition file.  Defaults
+to a bundled template suitable for the server's operating system.
+
+##### `service_path`
+
+The target path for the service definition file. Defaults to the standard path
+for the server's operating system.
+
+##### `service_provider`
+
+The Puppet service provider to use for service management.  Defaults to an
+appropriate value for the server's operating system.
 
 ## Limitations
 
