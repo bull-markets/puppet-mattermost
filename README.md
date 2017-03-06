@@ -437,4 +437,4 @@ the following platforms are offically supported by Mattermost:
 ## Development
 
 Please send pull requests.  For maintenance and contributor info, see
-[the maintainer guide](MAINTENANCE.md).
+[the maintainer guide](https://gitlab.com/harbottle/puppet-mattermost/blob/master/MAINTENANCE.md).
