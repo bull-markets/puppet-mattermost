@@ -9,16 +9,30 @@
     * [Beginning with mattermost](#beginning-with-mattermost)
 4. [Usage - Configuration options and additional functionality](#usage)
     * [Upgrading Mattermost](#upgrading-mattermost)
+      - [Security Updates](#security-updates)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
-This module installs and configures [Mattermost](http://www.mattermost.org/), the
-"alternative to proprietary SaaS messaging". It is compatible with Enterprise
-Linux 6 and 7 (RHEL, CentOS, etc.); Debian 7 and 8; Ubuntu 12.04 - 15.10; and
-SLES 12.
+This module installs and configures [Mattermost](http://www.mattermost.org/), to
+provide secure, private cloud messaging for teams and enterprises. More
+information is available at:
+[https://about.mattermost.com](https://about.mattermost.com).
+
+The name for this deployment solution in the context of the
+[Mattermost branding guidelines](https://www.mattermost.org/brand-guidelines/)
+is `Puppet module for Mattermost by Richard Grainger`.
+
+Following automated deployment, the following steps are required to make your
+system production-ready:
+
+ - [Configure SSL for Mattermost](https://about.mattermost.com/ssl-configuration/)
+ - [Configure SMTP email for Mattermost](https://about.mattermost.com/smtp-configuration/)
+
+Please see [https://docs.mattermost.com](https://docs.mattermost.com) for the
+official Mattermost documentation.
 
 ## Module Description
 
@@ -150,7 +164,7 @@ Install a specific version:
 
 ```puppet
 class { 'mattermost':
-  version => '3.4.0',
+  version => '3.6.2',
 }
 ```
 
@@ -166,7 +180,7 @@ Install a release candidate:
 
 ```puppet
 class { 'mattermost':
-  version => '3.6.0-rc2',
+  version => '3.7.0-rc2',
 }
 ```
 
@@ -174,7 +188,7 @@ Download from an internal server:
 
 ```puppet
 class { 'mattermost':
-  version  => '3.5.1',
+  version  => '3.6.2',
   full_url => 'http://intranet.bigcorp.com/packages/mattermost.tar.gz',
 }
 ```
@@ -186,7 +200,7 @@ just specify the new version when it has been released, for example:
 
 ```puppet
 class { 'mattermost':
-  version => '3.5.1',
+  version => '3.6.2',
 }
 ```
 
@@ -198,7 +212,7 @@ directory and the service will be refreshed.
 Please see the [upgrade guide](https://docs.mattermost.com/administration/upgrade.html)
 
 **Note 2:** Always
-[backup your data](http://docs.mattermost.com/install/upgrade-guide.html)
+[backup your data](https://docs.mattermost.com/administration/backup.html)
 before upgrades.
 
 **Note 3:** For a seamless upgrade you should store your file data outside of
@@ -214,6 +228,11 @@ class { 'mattermost':
   },
 }
 ```
+
+#### Security Updates
+We highly recommend users subscribe to the Mattermost security updates email
+list. When notified of a security update, the maintainers of this deployment
+solution will make an effort to update to the secure version within 10 days.
 
 ## Reference
 
@@ -247,7 +266,7 @@ are `team` and `enterprise`.
 
 ##### `version`
 
-The version of Mattermost server to install. Defaults to `3.5.1`.
+The version of Mattermost server to install. Defaults to `3.6.2`.
 
 ##### `file_name`
 
@@ -255,14 +274,14 @@ The filename of the remote Mattermost server release archive.
 Defaults to `mattermost-team-${version}-linux-amd64.tar.gz` (for Team edition)
 or `mattermost-${version}-linux-amd64.tar.gz` (for Enterprise edition),
 so with the default `version`, the default value will be
-`mattermost-team-3.5.1-linux-amd64.tar.gz`.
+`mattermost-team-3.6.2-linux-amd64.tar.gz`.
 
 ##### `full_url`
 
 The full URL of the Mattermost server release archive. Defaults to
 `${base_url}/${version}/${filename}`, so with the default `base_url`, `edition`,
 `version` and `file_name`, this will be:
-`https://releases.mattermost.com/3.5.1/mattermost-team-3.5.1-linux-amd64.tar.gz`.
+`https://releases.mattermost.com/3.6.2/mattermost-team-3.6.2-linux-amd64.tar.gz`.
 
 **Please note:** If you set `full_url` you should also set `version`
 to match the version of Mattermost server you are installing.
@@ -406,9 +425,16 @@ This module has been tested on:
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
 * Debian 7, 8
-* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04, 14.10, 15.04, 15.10, 16.04
+* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04, 14.10, 15.04, 15.10, 16.04, 16.10
 * SLES 12
+
+**Note:** According to the
+[Mattermost software requirements documentation](https://docs.mattermost.com/install/requirements.html#software-requirements),
+the following platforms are offically supported by Mattermost:
+ > Ubuntu 14.04, Debian Jessie, CentOS 6.6+, CentOS 7.1+, Red Hat Enterprise
+ Linux 6.6+, RedHat Enterprise Linux 7.1+, Oracle Linux 6.6+, Oracle Linux 7.1+.
 
 ## Development
 
-Please send pull requests.
+Please send pull requests.  For maintenance and contributor info, see
+[the maintainer guide](MAINTENANCE.md).
