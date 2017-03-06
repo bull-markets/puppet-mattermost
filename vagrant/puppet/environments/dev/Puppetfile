@@ -1,0 +1,21 @@
+mod 'apt',
+  :git    => 'https://github.com/puppetlabs/puppetlabs-apt.git',
+  :commit => 'f746a8349af054aa4b242aa441d8a6d80e622102'
+mod 'concat',
+  :git    => 'https://github.com/puppetlabs/puppetlabs-concat.git',
+  :commit => '803f95830ebe58485c03abdae46801c12ca89be3'
+mod 'firewall',
+  :git    => 'https://github.com/puppetlabs/puppetlabs-firewall.git',
+  :commit => '1a25c005017b550a6c8c99b0ec14d6746699866b'
+mod 'nginx',
+  :git    => 'https://github.com/voxpupuli/puppet-nginx.git',
+  :commit => '318f9298bbeecfe39168310d26833a6956d12a64'
+mod 'postgresql',
+  :git    => 'https://github.com/puppetlabs/puppetlabs-postgresql.git',
+  :commit => '6a07decd104dc1e004135bae6403e516cf13bbe2'
+mod 'staging',
+  :git    => 'https://github.com/nanliu/puppet-staging.git',
+  :commit => 'bc434a71e19aae54223d57c274e2e1a7f9546d5e'
+mod 'stdlib',
+  :git    => 'https://github.com/puppetlabs/puppetlabs-stdlib.git',
+  :commit => '2a75ed08a1b967d5d64144c449a1c1aed50e8d78'

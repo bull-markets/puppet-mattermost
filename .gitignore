@@ -1,1 +1,3 @@
 pkg/
+.vagrant
+vagrant/puppet/environments/dev/modules/[^.]*
