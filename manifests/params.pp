@@ -29,11 +29,14 @@ class mattermost::params {
         '5','6': {
           $service_template = 'mattermost/sysvinit_el.erb'
           $service_path     = '/etc/init.d/mattermost'
+          $service_provider = ''
           $service_mode     = '0755'
         }
         '7': {
           $service_template = 'mattermost/systemd.erb'
           $service_path     = '/lib/systemd/system/mattermost.service'
+          $service_provider = ''
+          $service_mode     = ''
         }
         default: { fail($fail_msg) }
       }
@@ -45,11 +48,14 @@ class mattermost::params {
             '6','7': {
               $service_template = 'mattermost/sysvinit_debian.erb'
               $service_path     = '/etc/init.d/mattermost'
+              $service_provider = ''
               $service_mode     = '0755'
             }
             '8': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/lib/systemd/system/mattermost.service'
+              $service_provider = ''
+              $service_mode     = ''
             }
             default: { fail($fail_msg) }
           }
@@ -60,11 +66,13 @@ class mattermost::params {
               $service_template = 'mattermost/upstart.erb'
               $service_path     = '/etc/init/mattermost.conf'
               $service_provider = 'upstart'
+              $service_mode     = ''
             }
             '15.04', '16.04': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/lib/systemd/system/mattermost.service'
               $service_provider = 'systemd'
+              $service_mode     = ''
             }
             default: { fail($fail_msg) }
           }
@@ -80,6 +88,7 @@ class mattermost::params {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/usr/lib/systemd/system/mattermost.service'
               $service_provider = 'systemd'
+              $service_mode     = ''
             }
             default: { fail($fail_msg) }
           }

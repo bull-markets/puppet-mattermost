@@ -1,3 +1,6 @@
+2017-03-06 Richard Grainger <grainger@gmail.com> - 1.6.0
+* Fix `mattermost::service_mode` unknown variable warnings [#23]
+
 2016-11-28 Richard Grainger <grainger@gmail.com> - 1.5.1
 * Make service_provider a class parameter
 * Improve documentation
