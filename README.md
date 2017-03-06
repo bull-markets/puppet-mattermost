@@ -64,9 +64,13 @@ This will install a Mattermost server listening on the default TCP port
 Here is an example of Mattermost using PostgreSQL as a database and NGINX as a
 reverse proxy, all running on the same system (requires
 [puppetlabs/postgresql](https://forge.puppetlabs.com/puppetlabs/postgresql) and
-[jfryman/nginx](https://forge.puppetlabs.com/jfryman/nginx)):
+[puppet/nginx](https://forge.puppet.com/puppet/nginx)):
 
 ```puppet
+class { 'postgresql::globals':
+  manage_package_repo => true,
+  version             => '9.4',
+} ->
 class { 'postgresql::server':
   ipv4acls => ['host all all 127.0.0.1/32 md5'],
 }
@@ -91,7 +95,7 @@ class { 'nginx': }
 nginx::resource::upstream { 'mattermost':
   members => [ 'localhost:8065' ],
 }
-nginx::resource::vhost { 'mattermost':
+nginx::resource::server { 'mattermost':
   server_name         => [ 'myserver.mydomain' ],
   proxy               => 'http://mattermost',
   location_cfg_append => {
