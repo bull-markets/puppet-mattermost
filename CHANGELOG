@@ -2,6 +2,11 @@
 * Fix README with regards to complete PostgreSQL/NGINX example [#21]
 * Add Vagrant dev environment [#22]
 * Fix `mattermost::service_mode` unknown variable warnings [#23]
+* Default to Mattermost 3.6.2 [#24]
+* Add `limit nofile 50000 50000` to upstart service template
+* Add `LimitNOFILE=49152` to systemd service template
+* Add suggested text to README from Mattermost Deployment Solution Programs
+* Add Maintainer Guide
 
 2016-11-28 Richard Grainger <grainger@gmail.com> - 1.5.1
 * Make service_provider a class parameter

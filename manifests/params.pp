@@ -4,7 +4,7 @@ class mattermost::params {
     "OS ${::operatingsystem} ${::operatingsystemrelease} is not supported"
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '3.5.1'
+  $version = '3.6.2'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
@@ -68,7 +68,7 @@ class mattermost::params {
               $service_provider = 'upstart'
               $service_mode     = ''
             }
-            '15.04', '16.04': {
+            '15.04', '16.04', '16.10': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/lib/systemd/system/mattermost.service'
               $service_provider = 'systemd'

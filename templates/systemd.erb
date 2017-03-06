@@ -13,6 +13,7 @@ WorkingDirectory=<%= @symlink %>
 User=<%= @user %>
 ExecStart=<%= @symlink %>/bin/platform -config=<%= @conf %>
 PIDFile=/var/spool/mattermost/pid/master.pid
+LimitNOFILE=49152
 
 [Install]
 WantedBy=multi-user.target
