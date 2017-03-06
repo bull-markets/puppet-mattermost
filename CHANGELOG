@@ -1,3 +1,7 @@
+2017-03-06 Richard Grainger <grainger@gmail.com> - 1.6.1
+* Add .pmtignore [#25]
+* Update Maintainer Guide link in README
+
 2017-03-06 Richard Grainger <grainger@gmail.com> - 1.6.0
 * Fix README with regards to complete PostgreSQL/NGINX example [#21]
 * Add Vagrant dev environment [#22]
