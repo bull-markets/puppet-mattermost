@@ -3,7 +3,7 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2  [Module Changes](#module-changes)
+2. [Module Changes](#module-changes)
 3. [Module Description - What the module does and why it is useful](#module-description)
 4. [Setup - The basics of getting started with mattermost](#setup)
     * [What mattermost affects](#what-mattermost-affects)
@@ -56,12 +56,14 @@ The Mattermost module does the following:
 
 ### What mattermost affects
 
-* Installs Mattermost server (defaults to `/opt/mattermost-${version}`).
+* Downloads and installs Mattermost server
+  (defaults to `/opt/mattermost-${version}`).
 * Creates a friendly symbolic link to the installation directory (defaults to
   `/opt/mattermost`).
+* Creates a configuration file (defaults to `/etc/mattermost.json`) based on the
+  vendor-provided configuration file and adds user-supplied options.
 * Creates a Mattermost daemon (service) using your operating system's native
   service provider.
-* Sets provided configuration options for Mattermost server.
 
 ### Beginning with mattermost
 

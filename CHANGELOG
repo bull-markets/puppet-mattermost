@@ -1,3 +1,6 @@
+2017-03-30 Richard Grainger <grainger@gmail.com> - 1.7.1
+* Fixed README
+
 2017-03-30 Richard Grainger <grainger@gmail.com> - 1.7.0
 * Change default conf file location to aide Mattermost upgrades
 * Default to Mattermost 3.7.3
