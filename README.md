@@ -3,16 +3,17 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with mattermost](#setup)
+2  [Module Changes](#module-changes)
+3. [Module Description - What the module does and why it is useful](#module-description)
+4. [Setup - The basics of getting started with mattermost](#setup)
     * [What mattermost affects](#what-mattermost-affects)
     * [Beginning with mattermost](#beginning-with-mattermost)
-4. [Usage - Configuration options and additional functionality](#usage)
+5. [Usage - Configuration options and additional functionality](#usage)
     * [Upgrading Mattermost](#upgrading-mattermost)
       - [Security Updates](#security-updates)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+6. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+7. [Limitations - OS compatibility, etc.](#limitations)
+8. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
@@ -34,6 +35,13 @@ system production-ready:
 Please see [https://docs.mattermost.com](https://docs.mattermost.com) for the
 official Mattermost documentation.
 
+## Module Changes
+
+From module version **1.7.0**, the default value of `conf` (the default
+Mattermost configuration file location) has changed to `/etc/mattermost.conf`.
+This is to allow configuration changes made using the web GUI to be preserved
+during Mattermost application upgrades.
+
 ## Module Description
 
 The Mattermost module does the following:
@@ -42,8 +50,7 @@ The Mattermost module does the following:
    alternative download location within your firewall.
  - Installs and configures a daemon (service) for Mattermost in the format
    native to your operating system.
- - Configures Mattermost according to settings you provide (modifies
-   Mattermost's `config.json` file).
+ - Configures Mattermost according to settings you provide.
 
 ## Setup
 
@@ -298,7 +305,7 @@ directory. Defaults to `/opt/mattermost`.
 
 ##### `conf`
 
-The path to Mattermost's config file. Defaults to `${dir}/config/confg.json`.
+The path to Mattermost's config file. Defaults to `/etc/mattermost.conf`.
 
 ##### `create_user`
 

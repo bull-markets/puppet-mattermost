@@ -9,7 +9,7 @@ class mattermost::params {
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
   $symlink = '/opt/mattermost'
-  $conf = '__DIR__/config/config.json'
+  $conf = '/etc/mattermost.json'
   $create_user = true
   $create_group = true
   $user = 'mattermost'
