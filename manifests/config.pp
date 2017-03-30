@@ -1,18 +1,15 @@
 # See README.md.
 class mattermost::config inherits mattermost {
   $override_options = $mattermost::override_options
+  $conf = $mattermost::conf
   $dir = regsubst(
     $mattermost::dir,
     '__VERSION__',
     $mattermost::version
   )
-  $conf = regsubst(
-    $mattermost::conf,
-    '__DIR__',
-    $dir
-  )
+  $source_conf = "${dir}/config/config.json"
   file { $conf:
-    content => '{}',
+    source  => $source_conf,
     owner   => $mattermost::user,
     group   => $mattermost::group,
     mode    => '0644',

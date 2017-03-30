@@ -1,3 +1,6 @@
+2017-03-30 Richard Grainger <grainger@gmail.com> - 1.7.0
+* Change default conf file location to aide Mattermost upgrades
+
 2017-03-06 Richard Grainger <grainger@gmail.com> - 1.6.1
 * Add .pmtignore [#25]
 * Update Maintainer Guide link in README
