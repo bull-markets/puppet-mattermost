@@ -4,4 +4,8 @@ respawn
 limit nofile 50000 50000
 chdir <%= @symlink %>
 setuid <%= @user %>
+<% if (scope.function_versioncmp(['3.8.0', @version]) > 0) -%>
 exec bin/platform -config="<%= @conf %>"
+<% else -%>
+exec bin/platform --config "<%= @conf %>"
+<% end -%>

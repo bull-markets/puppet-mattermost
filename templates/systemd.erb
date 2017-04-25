@@ -11,7 +11,11 @@ After=syslog.target network.target
 Type=simple
 WorkingDirectory=<%= @symlink %>
 User=<%= @user %>
+<% if (scope.function_versioncmp(['3.8.0', @version]) > 0) -%>
 ExecStart=<%= @symlink %>/bin/platform -config=<%= @conf %>
+<% else -%>
+ExecStart=<%= @symlink %>/bin/platform --config <%= @conf %>
+<% end -%>
 PIDFile=/var/spool/mattermost/pid/master.pid
 LimitNOFILE=49152
 
