@@ -16,7 +16,7 @@ class mattermost::install inherits mattermost {
     )
     $download_filename = "mattermost_enterprise_v${mattermost::version}.tar.gz"
   }
-  
+
   $full_url = regsubst(
     $mattermost::full_url,
     '__PLACEHOLDER__',
@@ -41,22 +41,28 @@ class mattermost::install inherits mattermost {
   }
   if ($mattermost::create_user) {
     user { $mattermost::user:
-      home =>  $mattermost::symlink,
-      uid  =>  $mattermost::uid,
-      gid  =>  $mattermost::gid,
+      home   => $mattermost::symlink,
+      uid    => $mattermost::uid,
+      gid    => $mattermost::gid,
+      before => [
+        File[$dir],
+        Staging::Extract[$download_filename],
+      ],
     }
   }
   if ($mattermost::create_group) {
     group { $mattermost::group:
-      gid  =>  $mattermost::gid,
+      gid    => $mattermost::gid,
+      before => [
+        File[$dir],
+        Staging::Extract[$download_filename],
+      ],
     }
   }
   file { $dir:
-    ensure  => directory,
-    owner   => $mattermost::user,
-    group   => $mattermost::group,
-    require => [User[$mattermost::user],
-                Group[$mattermost::group], ],
+    ensure => directory,
+    owner  => $mattermost::user,
+    group  => $mattermost::group,
   }
   staging::extract{ $download_filename:
     target  => $dir,
@@ -65,8 +71,6 @@ class mattermost::install inherits mattermost {
     group   => $mattermost::group,
     creates => "${dir}/bin",
     require => [Staging::File[$download_filename],
-                User[$mattermost::user],
-                Group[$mattermost::group],
                 File[$dir], ],
   }
   file { $mattermost::symlink:
