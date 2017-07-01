@@ -41,7 +41,7 @@ describe 'mattermost' do
         it { should contain_file('mattermost.service') }
         it { should contain_group('bar').with_gid(5678) }
         it { should contain_service('mattermost') }
-        it { should contain_staging__extract('mattermost_team_v1.2.3') }
+        it { should contain_staging__extract('mattermost_team_v1.2.3.tar.gz') }
         it { should contain_staging__file('mattermost_team_v1.2.3.tar.gz') }
         it { should contain_user('foo').with_uid(1234) }
       end
