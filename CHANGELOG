@@ -1,3 +1,6 @@
+2017-10-02 Richard Grainger <grainger@gmail.com> - 1.10.1
+* Publish module with puppet-blacksmith and GitLab-CI
+
 2017-09-27 Carlos Panato <ctadeu@gmail.com> - 1.10.0
 * Default to Mattermost 4.2.0
 

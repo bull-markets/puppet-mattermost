@@ -1,10 +1,19 @@
 stages:
 - test
+- push
 
 test:
   stage: test
-  image: ruby
+  image: harbottle/puppet-mattermost:latest
   script:
-    - 'echo -e "gem: --no-rdoc --no-ri" > ~/.gemrc'
-    - bundle install
     - bundle exec rake spec
+
+push:
+  stage: push
+  image: harbottle/puppet-mattermost:latest
+  only:
+    - master@harbottle/puppet-mattermost
+  script:
+    - rm -f Vagrantfile
+    - rm -rf vagrant
+    - bundle exec rake module:push
