@@ -1,4 +1,7 @@
-2015-10-15 Richard Grainger <grainger@gmail.com> - 1.11.0
+2017-10-19 Carlos Panato <ctadeu@gmail.com> - 1.11.1
+* Default to Mattermost 4.3.1
+
+2017-10-15 Richard Grainger <grainger@gmail.com> - 1.11.0
 * Default to Mattermost 4.3.0
 
 2017-10-02 Richard Grainger <grainger@gmail.com> - 1.10.1
