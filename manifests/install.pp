@@ -22,23 +22,24 @@ class mattermost::install inherits mattermost {
     '__PLACEHOLDER__',
     "${mattermost::base_url}/${mattermost::version}/${filename}"
   )
+
   $dir = regsubst(
     $mattermost::dir,
     '__VERSION__',
     $mattermost::version
   )
+
   $conf = regsubst(
     $mattermost::conf,
     '__DIR__',
     $dir
   )
+
   $mode = $mattermost::service_mode? {
     ''      => undef,
     default => $mattermost::service_mode,
   }
-  staging::file{ $download_filename:
-    source => $full_url,
-  }
+
   if ($mattermost::create_user) {
     user { $mattermost::user:
       home   => $mattermost::symlink,
@@ -46,37 +47,44 @@ class mattermost::install inherits mattermost {
       gid    => $mattermost::gid,
       before => [
         File[$dir],
-        Staging::Extract[$download_filename],
+        Archive[$download_filename],
       ],
     }
   }
+  
   if ($mattermost::create_group) {
     group { $mattermost::group:
       gid    => $mattermost::gid,
       before => [
         File[$dir],
-        Staging::Extract[$download_filename],
+        Archive[$download_filename],
       ],
     }
   }
+
   file { $dir:
     ensure => directory,
     owner  => $mattermost::user,
     group  => $mattermost::group,
   }
-  staging::extract{ $download_filename:
-    target  => $dir,
-    strip   => '1',
-    user    => $mattermost::user,
-    group   => $mattermost::group,
-    creates => "${dir}/bin",
-    require => [Staging::File[$download_filename],
-                File[$dir], ],
+
+  archive { $download_filename:
+    path            => "/tmp/${download_filename}",
+    source          => $full_url,
+    extract         => true,
+    extract_path    => $dir,
+    extract_command => 'tar xfz %s --strip-components=1',
+    creates         => "${dir}/bin",
+    user            => $mattermost::user,
+    group           => $mattermost::group,
+    require         => File[$dir],
   }
+
   file { $mattermost::symlink:
     ensure => link,
     target => $dir,
   }
+
   if ($mattermost::install_service) {
     file { 'mattermost.service':
       path    => $mattermost::service_path,
@@ -84,13 +92,14 @@ class mattermost::install inherits mattermost {
       mode    => $mode,
     }
   }
+
   if ($mattermost::data_dir and $mattermost::manage_data_dir){
     file { $mattermost::data_dir:
       ensure  => directory,
       owner   => $mattermost::user,
       group   => $mattermost::group,
       mode    => '0754',
-      require => Staging::Extract[$download_filename],
+      require => Archive[$download_filename],
     }
   }
 }
