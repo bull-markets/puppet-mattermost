@@ -51,7 +51,7 @@ class mattermost::install inherits mattermost {
       ],
     }
   }
-  
+
   if ($mattermost::create_group) {
     group { $mattermost::group:
       gid    => $mattermost::gid,
@@ -74,7 +74,7 @@ class mattermost::install inherits mattermost {
     extract         => true,
     extract_path    => $dir,
     extract_command => 'tar xfz %s --strip-components=1',
-    creates         => "${dir}/bin",
+    creates         => "${dir}/bin/platform",
     user            => $mattermost::user,
     group           => $mattermost::group,
     require         => File[$dir],
