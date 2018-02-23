@@ -4,7 +4,7 @@ class mattermost::params {
     "OS ${::operatingsystem} ${::operatingsystemrelease} is not supported"
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '4.7.1'
+  $version = '4.7.2'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
@@ -34,7 +34,7 @@ class mattermost::params {
         }
         '7': {
           $service_template = 'mattermost/systemd.erb'
-          $service_path     = '/lib/systemd/system/mattermost.service'
+          $service_path     = '/etc/systemd/system/mattermost.service'
           $service_provider = ''
           $service_mode     = ''
         }

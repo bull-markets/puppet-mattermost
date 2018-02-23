@@ -1,3 +1,8 @@
+2018-02-23 Martin Krebs <mtkr@gmail.com> - 1.16.0
+* Default to Mattermost 4.7.2
+* RHEL systemd unit file now under /etc/systemd/system/...
+* replace staging module with archive module
+
 2018-02-20 Carlos Panato <ctadeu@gmail.com> - 1.15.1
 * Default to Mattermost 4.7.1
 

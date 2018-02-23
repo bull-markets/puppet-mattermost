@@ -1,6 +1,6 @@
 fixtures:
   repositories:
-    "staging": "git://github.com/nanliu/puppet-staging.git"
+    "archive": "git://github.com/voxpupuli/puppet-archive.git"
     "stdlib":
       repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
       ref: "4.11.0"

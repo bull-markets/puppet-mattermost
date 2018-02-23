@@ -13,9 +13,9 @@ mod 'nginx',
 mod 'postgresql',
   :git    => 'https://github.com/puppetlabs/puppetlabs-postgresql.git',
   :commit => '6a07decd104dc1e004135bae6403e516cf13bbe2'
-mod 'staging',
-  :git    => 'https://github.com/nanliu/puppet-staging.git',
-  :commit => 'bc434a71e19aae54223d57c274e2e1a7f9546d5e'
+mod 'archive',
+  :git    => 'https://github.com/voxpupuli/puppet-archive.git',
+  :commit => '30594f39c56603fc9d1d9a5232c2cff66af1d8af'
 mod 'stdlib',
   :git    => 'https://github.com/puppetlabs/puppetlabs-stdlib.git',
   :commit => '2a75ed08a1b967d5d64144c449a1c1aed50e8d78'
