@@ -26,7 +26,7 @@ class mattermost::params {
   case $::osfamily {
     'RedHat': {
       case $::operatingsystemmajrelease {
-        '5','6': {
+        '6': {
           $service_template = 'mattermost/sysvinit_el.erb'
           $service_path     = '/etc/init.d/mattermost'
           $service_provider = ''
@@ -51,9 +51,9 @@ class mattermost::params {
               $service_provider = ''
               $service_mode     = '0755'
             }
-            '8': {
+            '8','9': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/lib/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/mattermost.service'
               $service_provider = ''
               $service_mode     = ''
             }
@@ -62,15 +62,15 @@ class mattermost::params {
         }
         'Ubuntu': {
           case $::operatingsystemmajrelease {
-            '12.04', '12.10', '13.04', '13.10', '14.04', '14.10': {
+            '12.04', '14.04': {
               $service_template = 'mattermost/upstart.erb'
               $service_path     = '/etc/init/mattermost.conf'
               $service_provider = 'upstart'
               $service_mode     = ''
             }
-            '16.04', '16.10': {
+            '16.04', '17.10': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/lib/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/mattermost.service'
               $service_provider = 'systemd'
               $service_mode     = ''
             }
@@ -86,7 +86,7 @@ class mattermost::params {
           case $::operatingsystemmajrelease {
             '12': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/usr/lib/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/mattermost.service'
               $service_provider = 'systemd'
               $service_mode     = ''
             }
