@@ -21,7 +21,7 @@ firewall { '100 allow http and https access':
 class { 'postgresql::globals':
   manage_package_repo => true,
   version             => '9.4',
-} ->
+}
 class { 'postgresql::server':
   ipv4acls => ['host all all 127.0.0.1/32 md5'],
 }
