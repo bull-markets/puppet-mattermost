@@ -1,5 +1,9 @@
 # mattermost
 
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/liger1978/mattermost.svg)](https://forge.puppetlabs.com/liger1978/mattermost)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/liger1978/mattermost.svg)](https://forge.puppetlabs.com/liger1978/mattermost)
+[![GitLab - build status](https://gitlab.com/harbottle/puppet-mattermost/badges/master/build.svg)](https://gitlab.com/harbottle/puppet-mattermost/builds)
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -68,7 +72,9 @@ The Mattermost module does the following:
 ### Beginning with mattermost
 
 If you have a suitable database installed for Mattermost server to use as a
-backend, this is the minimum you need to get Mattermost server working:
+backend, this is the minimum you need to get Mattermost server working.
+
+Using Puppet only:
 
 ```puppet
 class { 'mattermost':
@@ -79,6 +85,19 @@ class { 'mattermost':
     },
   },
 }
+```
+
+Using Puppet and Hiera:
+
+```puppet
+include mattermost
+```
+
+```yaml
+mattermost::override_options:
+  SqlSettings:
+    DriverName: postgres
+    DataSource: postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10
 ```
 
 This will install a Mattermost server listening on the default TCP port
@@ -93,7 +112,7 @@ reverse proxy, all running on the same system (requires
 class { 'postgresql::globals':
   manage_package_repo => true,
   version             => '9.4',
-} ->
+}
 class { 'postgresql::server':
   ipv4acls => ['host all all 127.0.0.1/32 md5'],
 }
@@ -433,15 +452,15 @@ This module has been tested on:
 * CentOS 6, 7
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
-* Debian 7, 8
-* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04, 14.10, 16.04, 16.10
+* Debian 7, 8, 9
+* Ubuntu 12.04, 14.04, 16.04, 17.10
 * SLES 12
 
 **Note:** According to the
 [Mattermost software requirements documentation](https://docs.mattermost.com/install/requirements.html#software-requirements),
 the following platforms are offically supported by Mattermost:
- > Ubuntu 14.04, Debian Jessie, CentOS 6.6+, CentOS 7.1+, Red Hat Enterprise
- Linux 6.6+, RedHat Enterprise Linux 7.1+, Oracle Linux 6.6+, Oracle Linux 7.1+.
+ > Ubuntu 14.04, Ubuntu 16.04, Debian Jessie, CentOS 6.6+, CentOS 7.1+, Red Hat
+ Enterprise Linux 6.6+, RedHat Enterprise Linux 7.1+, Oracle Linux 6.6+, Oracle Linux 7.1+.
 
 ## Development
 
