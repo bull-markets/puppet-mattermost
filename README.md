@@ -326,7 +326,7 @@ directory. Defaults to `/opt/mattermost`.
 
 ##### `conf`
 
-The path to Mattermost's config file. Defaults to `/etc/mattermost.conf`.
+The path to Mattermost's config file. Defaults to `/etc/mattermost.json`.
 
 ##### `create_user`
 
