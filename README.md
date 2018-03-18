@@ -16,6 +16,10 @@
     * [Upgrading Mattermost](#upgrading-mattermost)
       - [Security Updates](#security-updates)
 6. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+    * [Public classes](#public-classes)
+    * [Private classes](#private-classes)
+    * [Parameters](#parameters)
+    * [Public defined types](#public-defined-types)
 7. [Limitations - OS compatibility, etc.](#limitations)
 8. [Development - Guide for contributing to the module](#development)
 
@@ -264,13 +268,11 @@ solution will make an effort to update to the secure version within 10 days.
 
 ## Reference
 
-### Classes
-
-#### Public classes
+### Public classes
 
  - `mattermost`: Main class, includes all other classes
 
-#### Private classes
+### Private classes
 
  - `mattermost::install`: Installs the Mattermost server from a web archive and
    optionally installs a daemon (service) for Mattermost in the format native
@@ -441,6 +443,73 @@ for the server's operating system.
 
 The Puppet service provider to use for service management.  Defaults to an
 appropriate value for the server's operating system.
+
+### Public defined types
+
+#### Defined type: `mattermost_settings`
+
+Defines settings within a JSON-formatted Mattermost configuration file.
+
+**Example:**
+
+```puppet
+mattermost_settings{ `/etc/mattermost.json`:
+  values  => {
+    'SqlSettings' => {
+      'DriverName' => 'postgres',
+      'DataSource' => "postgres://mattermost:mattermost@127.0.0.1:5432/mattermost?sslmode=disable&connect_timeout=10",
+    },
+    'TeamSettings' => {
+      'SiteName' => 'Dev Team',
+    },
+  },
+}
+```
+
+`mattermost_settings` parameters:
+
+##### `name`
+
+An arbitrary name for the resource. It will be the default for 'target'.
+
+##### `target`
+
+The path to the mattermost config file to manage. Either this file should
+already exist, or the source parameter needs to be specified.
+
+##### `source`
+
+The file from which to load the current settings. If unspecified, it defaults to
+the target file.
+
+##### `allow_new_value`
+
+Whether it should be allowed to specify values for non-existing tree portions.
+Defaults to `true`.
+
+##### `allow_new_file`
+
+Whether it should be allowed to create a new target file.  Default to `true`.
+
+##### `user`
+
+The user with which to make the changes.
+
+##### `values`
+
+The portions to change and their new values. This should be a hash. The subtree
+to change is specified in the form:
+
+```
+<key 1>/<key 2>/.../<key n>
+```
+
+where `<key x>` admits three variants:
+  * the plain contents of the string key, as long as they do not start
+    with `:` or `'` and do not contain `/`
+  * `'<contents>'`, to represent a string key that contains the characters
+    mentioned above. Single quotes must be doubled to have literal value.
+  * `:'<contents>'`, likewise, but the value will be a symbol.
 
 ## Limitations
 

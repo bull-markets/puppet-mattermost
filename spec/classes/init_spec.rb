@@ -34,7 +34,7 @@ describe 'mattermost' do
         it { should contain_class('mattermost::service') }
         it { should contain_anchor('mattermost::begin') }
         it { should contain_anchor('mattermost::end') }
-        it { should contain_augeas('/etc/mattermost.json') }
+        it { should contain_mattermost_settings('/etc/mattermost.json') }
         it { should contain_file('/etc/mattermost.json') }
         it { should contain_file('/opt/mattermost-1.2.3') }
         it { should contain_file('/opt/mattermost') }

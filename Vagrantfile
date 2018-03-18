@@ -6,6 +6,7 @@ rm -rf /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 mkdir -p /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 cp -R /vagrant/manifests /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 cp -R /vagrant/templates /vagrant/vagrant/puppet/environments/dev/modules/mattermost
+cp -R /vagrant/lib /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 MODULE
 
 $apt = <<APT
@@ -13,6 +14,10 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7F438280EF8D349F
 apt-get update
 apt-get -y install apt-transport-https
 apt-get update
+APT
+
+$apt2 = <<APT
+apt-get -y install puppet
 APT
 
 Vagrant.configure("2") do |config|
@@ -36,6 +41,7 @@ Vagrant.configure("2") do |config|
     centos6.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -50,6 +56,7 @@ Vagrant.configure("2") do |config|
     centos7.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -65,6 +72,7 @@ Vagrant.configure("2") do |config|
     debian7.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -80,6 +88,24 @@ Vagrant.configure("2") do |config|
     debian8.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
+    end
+  end
+
+  config.vm.define "debian9" do |debian9|
+    debian9.vm.box = "debian/contrib-stretch64"#puppet.options = "--verbose --debug"
+    debian9.vm.hostname = "debian9.test"
+    debian9.vm.network :private_network, ip: "172.16.4.9"
+    debian9.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    debian9.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    debian9.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    debian9.vm.provision "shell", inline: $module
+    debian9.vm.provision "shell", inline: $apt
+    debian9.vm.provision "shell", inline: $apt2
+    debian9.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -95,6 +121,7 @@ Vagrant.configure("2") do |config|
     ubuntu1204.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -110,6 +137,7 @@ Vagrant.configure("2") do |config|
     ubuntu1404.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
@@ -125,6 +153,25 @@ Vagrant.configure("2") do |config|
     ubuntu1604.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
+    end
+  end
+
+  config.vm.define "ubuntu1710" do |ubuntu1710|
+    ubuntu1710.vm.box = "ubuntu/artful64"
+    ubuntu1710.vm.hostname = "ubuntu1710.test"
+    ubuntu1710.vm.network :private_network, ip: "172.16.21.17"
+    ubuntu1710.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    ubuntu1710.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    ubuntu1710.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    ubuntu1710.vm.provision "shell", inline: "resize2fs /dev/sda1"
+    ubuntu1710.vm.provision "shell", inline: $module
+    ubuntu1710.vm.provision "shell", inline: $apt
+    ubuntu1710.vm.provision "shell", inline: $apt2
+    ubuntu1710.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      #puppet.options = "--verbose --debug"
     end
   end
 
