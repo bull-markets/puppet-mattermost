@@ -1,3 +1,8 @@
+2018-03-18 Richard Grainger <grainger@gmail.com> - 2.0.0
+* Replace use of augeas with new mattermost_settings defined type
+* Add vagrant boxes to dev/test environment
+* Fixes #34 (Augeas fails to update configuration file)
+
 2018-03-16 Carlos Panato <ctadeu@gmail.com> - 1.17.0
 * Default to Mattermost 4.8.0
 

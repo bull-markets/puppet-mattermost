@@ -3,4 +3,4 @@ pkg/
 vagrant/puppet/environments/dev/modules/[^.]*
 bundle/
 .bundle/
-
+*.log
