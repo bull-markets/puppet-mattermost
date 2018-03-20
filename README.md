@@ -453,7 +453,7 @@ Defines settings within a JSON-formatted Mattermost configuration file.
 **Example:**
 
 ```puppet
-mattermost_settings{ `/etc/mattermost.json`:
+mattermost_settings{ '/etc/mattermost.json':
   values  => {
     'SqlSettings' => {
       'DriverName' => 'postgres',
