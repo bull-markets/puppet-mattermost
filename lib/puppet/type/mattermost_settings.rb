@@ -171,7 +171,7 @@ Puppet::Type.newtype(:mattermost_settings) do
         cur_value = is.subtree_fetch key
         desired_value = cur_value.merge(desired_value)
         unless cur_value == desired_value
-          Puppet.notice "Mattermost setting #{key} is out of sync: '#{JSON.pretty_generate(cur_value)}' should be '#{JSON.pretty_generate(desired_value)}'"
+          Puppet.notice "Mattermost setting #{key} is out of sync: '#{JSON.pretty_generate(cur_value)}'\nshould be\n'#{JSON.pretty_generate(desired_value)}'"
           result = false
         end
       end

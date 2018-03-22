@@ -93,7 +93,7 @@ Puppet::Type.type(:mattermost_settings).provide(:mattermost_settings_provider) d
 
   def write(file_path, contents)
     with_chosen_user do
-      IO.write file_path, contents.to_json
+      IO.write file_path, JSON.pretty_generate(contents)
     end
   end
 
