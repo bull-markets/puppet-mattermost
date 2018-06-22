@@ -10,7 +10,7 @@
 
 name=mattermost
 dir=<%= @symlink %>
-exe=bin/platform
+exe=bin/<%= @executable %>
 <% if (scope.function_versioncmp(['3.8.0', @version]) > 0) -%>
 daemon_opts="-config=<%= @conf %>"
 <% else -%>

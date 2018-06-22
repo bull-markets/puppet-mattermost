@@ -40,6 +40,8 @@ class mattermost::install inherits mattermost {
     default => $mattermost::service_mode,
   }
 
+  $executable = $mattermost::executable
+
   if ($mattermost::create_user) {
     user { $mattermost::user:
       home   => $mattermost::symlink,
@@ -74,7 +76,7 @@ class mattermost::install inherits mattermost {
     extract         => true,
     extract_path    => $dir,
     extract_command => 'tar xfz %s --strip-components=1',
-    creates         => "${dir}/bin/platform",
+    creates         => "${dir}/bin/${executable}",
     user            => $mattermost::user,
     group           => $mattermost::group,
     require         => File[$dir],

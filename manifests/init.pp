@@ -60,10 +60,15 @@ class mattermost (
   else {
     $data_dir = undef
   }
-
-  anchor { 'mattermost::begin': } ->
-  class { '::mattermost::install': } ->
-  class { '::mattermost::config': } ~>
-  class { '::mattermost::service': } ->
-  anchor { 'mattermost::end': }
+  if versioncmp($version, '5.0.0') >= 0 {
+    $executable = 'mattermost'
+  }
+  else {
+    $executable = 'platform'
+  }
+  anchor { 'mattermost::begin': }
+  -> class { '::mattermost::install': }
+  -> class { '::mattermost::config': }
+  ~> class { '::mattermost::service': }
+  -> anchor { 'mattermost::end': }
 }
