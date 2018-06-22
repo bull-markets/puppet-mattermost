@@ -13,6 +13,7 @@ push:
   image: harbottle/puppet-mattermost:latest
   only:
     - master@harbottle/puppet-mattermost
+  when: manual
   script:
     - rm -f Vagrantfile
     - rm -rf vagrant
