@@ -12,9 +12,9 @@ Type=simple
 WorkingDirectory=<%= @symlink %>
 User=<%= @user %>
 <% if (scope.function_versioncmp(['3.8.0', @version]) > 0) -%>
-ExecStart=<%= @symlink %>/bin/platform -config=<%= @conf %>
+ExecStart=<%= @symlink %>/bin/<%= @executable %> -config=<%= @conf %>
 <% else -%>
-ExecStart=<%= @symlink %>/bin/platform --config <%= @conf %>
+ExecStart=<%= @symlink %>/bin/<%= @executable %> --config <%= @conf %>
 <% end -%>
 PIDFile=/var/spool/mattermost/pid/master.pid
 LimitNOFILE=49152
