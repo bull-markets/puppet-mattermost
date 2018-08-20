@@ -169,7 +169,7 @@ Puppet::Type.newtype(:mattermost_settings) do
       #should = is.merge(should)
       should.each_pair do |key, desired_value|
         cur_value = is.subtree_fetch key
-        desired_value = cur_value.merge(desired_value)
+        desired_value = cur_value.merge(desired_value) if cur_value.instance_of? Hash
         unless cur_value == desired_value
           Puppet.notice "Mattermost setting #{key} is out of sync: '#{JSON.pretty_generate(cur_value)}'\nshould be\n'#{JSON.pretty_generate(desired_value)}'"
           result = false
