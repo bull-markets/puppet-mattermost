@@ -1,6 +1,6 @@
 # Maintainer Guide
 
-This file outlines the current maintainer(s) of this open source project and
+This file outlines the current maintainers of this open source project and
 expectations. It also includes credits to past maintainers and the project
 creator.
 
@@ -14,22 +14,22 @@ Please use this long name:
 
 - Puppet module for Mattermost by Richard Grainger
 
-## Maintainer(s)
+## Maintainers
 
 The following people help to maintain this open source project:
 
-| Current Maintainer(s)                                                                                                    | Start Date |
-|:-------------------------------------------------------------------------------------------------------------------------|:--------------|
-| Richard Grainger, GitLab: [@harbottle](https://gitlab.com/harbottle), Github: [@liger1978](https://github.com/liger1978) | Jan 09 2016   |
+| Name              | GitLab ID                                   | GitHub ID                                   | Start Date   |
+|:------------------|:--------------------------------------------|:--------------------------------------------|:-------------|
+| Richard Grainger  | [@harbottle](https://gitlab.com/harbottle)  | [@liger1978](https://github.com/liger1978)  | Jan 09 2016  |
+| Carlos Panato     | [@cpanato](https://gitlab.com/cpanato)      | [@cpanato](https://github.com/cpanato)      | Aug 30 2017  |
 
 In case something happens where no maintainers are able to complete their
 responsibilies, the following sponsoring organization can help find a new
 maintainer:
 
-| Sponsoring Organization        | Start Date    |
-|:-------------------------------|:--------------|
-| Mattermost Open Source Project | Mar 06 2017   |
-
+| Sponsoring Organization                                         | Start Date    |
+|:----------------------------------------------------------------|:--------------|
+| [Mattermost Open Source Project](https://github.com/mattermost) | Mar 06 2017   |
 
 ## Activities
 
@@ -66,20 +66,23 @@ this project by doing the following:
 
 ### Issue and Pull Request Review
 
-Maintainer(s) should periodically review pull requests and issues submitted to provide feedback and to merge pull request changes when the maintainer feels the change would be appropriate.
+Maintainers should periodically review pull requests and issues submitted to provide feedback and to merge pull request changes when the maintainer feels the change would be appropriate.
 
 ## Credits
 
-CREATOR
+### Creator
 
-| Creator                                                                                                                  | Created Date  |
-|:-------------------------------------------------------------------------------------------------------------------------|:--------------|
-| Richard Grainger, GitLab: [@harbottle](https://gitlab.com/harbottle), GitHub: [@liger1978](https://github.com/liger1978) | Jan 09 2016   |
+| Name              | GitLab ID                                   | GitHub ID                                   | Created Date |
+|:------------------|:--------------------------------------------|:--------------------------------------------|:-------------|
+| Richard Grainger  | [@harbottle](https://gitlab.com/harbottle)  | [@liger1978](https://github.com/liger1978)  | Jan 09 2016  |
 
-Contributors:
+### Contributors
 
- - Richard Grainger, GitLab: [@harbottle](https://gitlab.com/harbottle), GitHub: [@liger1978](https://github.com/liger1978)
- - Garrett Guillotte, GitHub: [@gguillotte](https://github.com/gguillotte)
- - Christopher Jenkins, GitLab: [@christj](https://gitlab.com/christj), GitHub: [@sevendials](https://github.com/sevendials)
- - Carlos Panato, GitLab: [@cpanato](https://gitlab.com/cpanato), GitHub: [@cpanato](https://github.com/cpanato)
- - Martin Krebs, GitLab: [@mtkr] (https://gitlab.com/mtkr), GitHub [@posteingang] (https://github.com/posteingang)
+| Name                 | GitLab ID                                   | GitHub ID                                       |
+|:---------------------|:--------------------------------------------|:------------------------------------------------|
+| Richard Grainger     | [@harbottle](https://gitlab.com/harbottle)  | [@liger1978](https://github.com/liger1978)      |
+| Garrett Guillotte    |                                             | [@gguillotte](https://github.com/gguillotte)    |
+| Christopher Jenkins  | [@christj](https://gitlab.com/christj)      | [@sevendials](https://github.com/sevendials)    |
+| Martin Krebs         | [@mtkr](https://gitlab.com/mtkr)            | [@posteingang](https://github.com/posteingang)  |
+| Marco Nenciarini     | [@mnencia](https://gitlab.com/mnencia)      | [@mnencia](https://github.com/mnencia)          |
+| Carlos Panato        | [@cpanato](https://gitlab.com/cpanato)      | [@cpanato](https://github.com/cpanato)          |
