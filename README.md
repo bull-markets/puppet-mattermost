@@ -363,7 +363,7 @@ Mattermost server. Defaults to `1500`.
 ##### `override_options`
 
 A hash containing overrides to the default settings contained in Mattermost's
-[config file](https://github.com/mattermost/platform/blob/master/config/config.json).
+[config file](https://github.com/mattermost/mattermost-server/blob/master/config/default.json).
 Defaults to `{}` (empty hash).
 
 **Note 1:** You should at least specify `SqlSettings`, e.g.:

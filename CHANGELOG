@@ -1,3 +1,7 @@
+2018-08-21 Richard Grainger <grainger@gmail.com> - 2.4.1
+* Avoid merging a config value if not an hash [#38] [@mnencia]
+* Merge configuration during writes [@mnencia]
+
 2018-08-20 Carlos Panato <ctadeu@gmail.com> - 2.4.0
 * Default to Mattermost 5.2.0
 
