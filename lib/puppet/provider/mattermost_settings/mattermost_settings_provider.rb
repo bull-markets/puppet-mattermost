@@ -35,6 +35,7 @@ Puppet::Type.type(:mattermost_settings).provide(:mattermost_settings_provider) d
            "not a hash (got #{target.inspect})" unless target.instance_of? Hash
       fail "Not allowing new values, so rejecting setting '#{spec}' to #{value}" unless
           target.key?(final_index) or allow_new
+      value = target[final_index].merge(value) if target[final_index].instance_of? Hash
       target[final_index] = value
     end
   end
