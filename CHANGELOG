@@ -1,5 +1,8 @@
+2018-12-06 Carlos Panato <ctadeu@gmail.com> - 2.7.1
+* Default to Mattermost 5.5.1
+
 2018-11-16 Carlos Panato <ctadeu@gmail.com> - 2.7.0
-* Default to Mattermost 5.4.0
+* Default to Mattermost 5.5.0
 
 2018-10-17 Carlos Panato <ctadeu@gmail.com> - 2.6.0
 * Default to Mattermost 5.4.0
