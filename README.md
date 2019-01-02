@@ -522,7 +522,7 @@ This module has been tested on:
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
 * Debian 7, 8, 9
-* Ubuntu 12.04, 14.04, 16.04, 17.10
+* Ubuntu 12.04, 14.04, 16.04, 17.10, 18.04
 * SLES 12
 
 **Note:** According to the
