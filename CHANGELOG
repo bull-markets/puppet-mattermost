@@ -1,5 +1,8 @@
-2019-01-12 Carlos Panato <ctadeu@gmail.com> - 2.8.3
-* Default to Mattermost 5.6.3
+2019-01-12 Richard Grainger <harbottle@room3d3.com> - 2.9.0
+* Default to Mattermost 5.6.3 [!92] [@cpanato]
+* Support Ubuntu 18.04 [!91] [@francesco.canovai] 
+* Support Puppet 6 [!93] [@harbottle]
+* Support stdlib 5 [!93] [@harbottle]
 
 2018-12-22 Carlos Panato <ctadeu@gmail.com> - 2.8.2
 * Default to Mattermost 5.6.2
