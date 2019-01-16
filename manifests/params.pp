@@ -4,7 +4,7 @@ class mattermost::params {
     "OS ${::operatingsystem} ${::operatingsystemrelease} is not supported"
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '5.6.3'
+  $version = '5.7.0'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
