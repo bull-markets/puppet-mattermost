@@ -14,7 +14,7 @@ class mattermost::config inherits mattermost {
       content => '{}',
       owner   => $mattermost::user,
       group   => $mattermost::group,
-      mode    => '0644',
+      mode    => '0640',
       replace => true,
     }
   } else {
@@ -22,7 +22,7 @@ class mattermost::config inherits mattermost {
       source  => $source_conf,
       owner   => $mattermost::user,
       group   => $mattermost::group,
-      mode    => '0644',
+      mode    => '0640',
       replace => false,
     }
   }
