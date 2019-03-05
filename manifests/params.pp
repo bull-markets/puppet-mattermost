@@ -48,7 +48,7 @@ class mattermost::params {
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemmajrelease {
-            '6','7': {
+            '7': {
               $service_template = 'mattermost/sysvinit_debian.erb'
               $service_path     = '/etc/init.d/__SERVICENAME__'
               $service_provider = ''
@@ -71,7 +71,7 @@ class mattermost::params {
               $service_provider = 'upstart'
               $service_mode     = ''
             }
-            '16.04', '17.10', '18.04': {
+            '16.04', '18.04', '18.10': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'
@@ -87,7 +87,7 @@ class mattermost::params {
       case $::operatingsystem {
         'SLES': {
           case $::operatingsystemmajrelease {
-            '12': {
+            '12', '15': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'

@@ -571,7 +571,7 @@ where `<key x>` admits three variants:
 
 ## Limitations
 
-This module has been tested with Puppet 3 and 4.
+This module has been tested with Puppet 3, 4, 5 and 6.
 
 This module has been tested on:
 
@@ -580,14 +580,14 @@ This module has been tested on:
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
 * Debian 7, 8, 9
-* Ubuntu 12.04, 14.04, 16.04, 17.10, 18.04
-* SLES 12
+* Ubuntu 12.04, 14.04, 16.04, 18.04, 18.10
+* SLES 12, 15
 
 **Note:** According to the
 [Mattermost software requirements documentation](https://docs.mattermost.com/install/requirements.html#software-requirements),
 the following platforms are offically supported by Mattermost:
- > Ubuntu 14.04, Ubuntu 16.04, Debian Jessie, CentOS 6.6+, CentOS 7.1+, Red Hat
- Enterprise Linux 6.6+, RedHat Enterprise Linux 7.1+, Oracle Linux 6.6+, Oracle Linux 7.1+.
+ > Ubuntu 14.04, Ubuntu 16.04, Debian Stretch, CentOS 6+, CentOS 7+, RedHat
+ Enterprise Linux 6+, RedHat Enterprise Linux 7+, Oracle Linux 6+, Oracle Linux 7+
 
 ## Development
 
