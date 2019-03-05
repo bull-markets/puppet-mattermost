@@ -1,5 +1,5 @@
 [Unit]
-Description=mattermost
+Description=<%= @service_name %>
 <% if @depend_service != '' -%>
 After=syslog.target network.target <%= @depend_service %>.service
 Requires=<%= @depend_service %>.service

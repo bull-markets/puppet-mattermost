@@ -1,27 +1,47 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$el = <<'EL'
+setenforce 0
+export release=$(sed -r 's/^.* ([0-9]).*$/\1/g' /etc/redhat-release)
+rpm -q puppet6-release || yum -y install https://yum.puppetlabs.com/puppet6/puppet6-release-el-${release}.noarch.rpm
+rpm -q puppet-agent || yum -y install puppet-agent
+EL
+
+$centos6 = <<CENTOS6
+service iptables status || {
+  yum -y install authconfig system-config-firewall-base
+  lokkit --default=server
+  service iptables restart
+}
+CENTOS6
+
+$debian = <<DEBIAN
+export release=$(dpkg --status tzdata|grep Provides|cut -f2 -d'-')
+dpkg -l puppet-agent || {
+  apt-get update
+  apt-get -y install apt-transport-https wget
+  wget https://apt.puppetlabs.com/puppet6-release-${release}.deb
+  dpkg -i puppet6-release-${release}.deb
+  apt-get update
+  apt-get -y install puppet-agent
+}
+DEBIAN
+
 $module = <<MODULE
 rm -rf /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 mkdir -p /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 cp -R /vagrant/manifests /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 cp -R /vagrant/templates /vagrant/vagrant/puppet/environments/dev/modules/mattermost
 cp -R /vagrant/lib /vagrant/vagrant/puppet/environments/dev/modules/mattermost
+rm -rf /vagrant/vagrant/puppet/environments/dev/modules/mattermost
+mkdir -p /tmp/vagrant-puppet/environments/dev/modules/mattermost
+cp -R /vagrant/manifests /tmp/vagrant-puppet/environments/dev/modules/mattermost
+cp -R /vagrant/templates /tmp/vagrant-puppet/environments/dev/modules/mattermost
+cp -R /vagrant/lib /tmp/vagrant-puppet/environments/dev/modules/mattermost
 MODULE
 
-$apt = <<APT
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7F438280EF8D349F
-apt-get update
-apt-get -y install apt-transport-https
-apt-get update
-APT
-
-$apt2 = <<APT
-apt-get -y install puppet
-APT
-
 Vagrant.configure("2") do |config|
-
   if Vagrant.has_plugin?("vagrant-hostmanager")
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
@@ -29,150 +49,82 @@ Vagrant.configure("2") do |config|
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = true
   end
-
-  config.vm.define "centos6" do |centos6|
-    centos6.vm.box = "puppetlabs/centos-6.6-64-puppet"
-    centos6.vm.hostname = "centos6.test"
-    centos6.vm.network :private_network, ip: "172.16.3.6"
-    centos6.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    centos6.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    centos6.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    centos6.vm.provision "shell", inline: $module
-    centos6.vm.provision "puppet" do |puppet|
+  config.vm.define "centos6" do |host|
+    host.vm.box = "centos/6"
+    host.vm.hostname = "centos6.test"
+    host.vm.network :private_network, ip: "172.16.3.6"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $centos6
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-
-  config.vm.define "centos7" do |centos7|
-    centos7.vm.box = "puppetlabs/centos-7.2-64-puppet"
-    centos7.vm.hostname = "centos7.test"
-    centos7.vm.network :private_network, ip: "172.16.3.7"
-    centos7.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    centos7.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    centos7.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    centos7.vm.provision "shell", inline: $module
-    centos7.vm.provision "puppet" do |puppet|
+  config.vm.define "centos7" do |host|
+    host.vm.box = "centos/7"
+    host.vm.hostname = "centos7.test"
+    host.vm.network :private_network, ip: "172.16.3.7"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-
-  config.vm.define "debian7" do |debian7|
-    debian7.vm.box = "puppetlabs/debian-7.8-64-puppet"
-    debian7.vm.hostname = "debian7.test"
-    debian7.vm.network :private_network, ip: "172.16.4.7"
-    debian7.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    debian7.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    debian7.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    debian7.vm.provision "shell", inline: $module
-    debian7.vm.provision "shell", inline: $apt
-    debian7.vm.provision "puppet" do |puppet|
+  config.vm.define "centos7pkg" do |host|
+    host.vm.box = "centos/7"
+    host.vm.hostname = "centos7pkg.test"
+    host.vm.network :private_network, ip: "172.16.3.14"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-
-  config.vm.define "debian8" do |debian8|
-    debian8.vm.box = "puppetlabs/debian-8.2-64-puppet"
-    debian8.vm.hostname = "debian8.test"
-    debian8.vm.network :private_network, ip: "172.16.4.8"
-    debian8.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    debian8.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    debian8.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    debian8.vm.provision "shell", inline: $module
-    debian8.vm.provision "shell", inline: $apt
-    debian8.vm.provision "puppet" do |puppet|
+  config.vm.define "stretch" do |host|
+    host.vm.box = "generic/debian9"
+    host.vm.hostname = "stretch.test"
+    host.vm.network :private_network, ip: "172.16.4.9"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-
-  config.vm.define "debian9" do |debian9|
-    debian9.vm.box = "debian/contrib-stretch64"#puppet.options = "--verbose --debug"
-    debian9.vm.hostname = "debian9.test"
-    debian9.vm.network :private_network, ip: "172.16.4.9"
-    debian9.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    debian9.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    debian9.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    debian9.vm.provision "shell", inline: $module
-    debian9.vm.provision "shell", inline: $apt
-    debian9.vm.provision "shell", inline: $apt2
-    debian9.vm.provision "puppet" do |puppet|
+  config.vm.define "xenial" do |host|
+    host.vm.box = "generic/ubuntu1604"
+    host.vm.hostname = "xenial.test"
+    host.vm.network :private_network, ip: "172.16.21.16"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-
-  config.vm.define "ubuntu1204" do |ubuntu1204|
-    ubuntu1204.vm.box = "puppetlabs/ubuntu-12.04-64-puppet"
-    ubuntu1204.vm.hostname = "ubuntu1204.test"
-    ubuntu1204.vm.network :private_network, ip: "172.16.21.12"
-    ubuntu1204.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    ubuntu1204.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    ubuntu1204.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    ubuntu1204.vm.provision "shell", inline: $module
-    ubuntu1204.vm.provision "shell", inline: $apt
-    ubuntu1204.vm.provision "puppet" do |puppet|
-      puppet.environment_path = "vagrant/puppet/environments"
-      puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
-    end
-  end
-
-    config.vm.define "ubuntu1404" do |ubuntu1404|
-    ubuntu1404.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"
-    ubuntu1404.vm.hostname = "ubuntu1404.test"
-    ubuntu1404.vm.network :private_network, ip: "172.16.21.14"
-    ubuntu1404.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    ubuntu1404.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    ubuntu1404.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    ubuntu1404.vm.provision "shell", inline: $module
-    ubuntu1404.vm.provision "shell", inline: $apt
-    ubuntu1404.vm.provision "puppet" do |puppet|
-      puppet.environment_path = "vagrant/puppet/environments"
-      puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
-    end
-  end
-
-  config.vm.define "ubuntu1604" do |ubuntu1604|
-    ubuntu1604.vm.box = "puppetlabs/ubuntu-16.04-64-puppet"
-    ubuntu1604.vm.hostname = "ubuntu1604.test"
-    ubuntu1604.vm.network :private_network, ip: "172.16.21.16"
-    ubuntu1604.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    ubuntu1604.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    ubuntu1604.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    ubuntu1604.vm.provision "shell", inline: $module
-    ubuntu1604.vm.provision "shell", inline: $apt
-    ubuntu1604.vm.provision "puppet" do |puppet|
-      puppet.environment_path = "vagrant/puppet/environments"
-      puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
-    end
-  end
-
-  config.vm.define "ubuntu1710" do |ubuntu1710|
-    ubuntu1710.vm.box = "ubuntu/artful64"
-    ubuntu1710.vm.hostname = "ubuntu1710.test"
-    ubuntu1710.vm.network :private_network, ip: "172.16.21.17"
-    ubuntu1710.r10k.puppet_dir = "vagrant/puppet/environments/dev"
-    ubuntu1710.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
-    ubuntu1710.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
-    ubuntu1710.vm.provision "shell", inline: "resize2fs /dev/sda1"
-    ubuntu1710.vm.provision "shell", inline: $module
-    ubuntu1710.vm.provision "shell", inline: $apt
-    ubuntu1710.vm.provision "shell", inline: $apt2
-    ubuntu1710.vm.provision "puppet" do |puppet|
-      puppet.environment_path = "vagrant/puppet/environments"
-      puppet.environment = "dev"
-      #puppet.options = "--verbose --debug"
-    end
-  end
-
 end

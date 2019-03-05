@@ -1,5 +1,7 @@
 # See README.md.
 class mattermost (
+  $install_from_pkg = $mattermost::params::install_from_pkg,
+  $pkg              = $mattermost::params::pkg,
   $base_url         = $mattermost::params::base_url,
   $edition          = $mattermost::params::edition,
   $version          = $mattermost::params::version,
@@ -19,6 +21,7 @@ class mattermost (
   $depend_service   = $mattermost::params::depend_service,
   $install_service  = $mattermost::params::install_service,
   $manage_service   = $mattermost::params::manage_service,
+  $service_name     = $mattermost::params::service_name,
   $service_template = $mattermost::params::service_template,
   $service_path     = $mattermost::params::service_path,
   $service_provider = $mattermost::params::service_provider,
@@ -26,6 +29,8 @@ class mattermost (
 
 ) inherits mattermost::params {
 
+  validate_bool($install_from_pkg)
+  validate_string($pkg)
   validate_string($base_url)
   validate_re($edition,['^team$','^enterprise$'])
   validate_string($version)
@@ -33,23 +38,24 @@ class mattermost (
   validate_string($full_url)
   validate_absolute_path($dir)
   validate_absolute_path($symlink)
-  validate_string($conf)
   validate_bool($create_user)
   validate_bool($create_group)
   validate_string($user)
   validate_string($group)
   validate_integer($uid)
   validate_integer($gid)
+  validate_string($conf)
   validate_hash($override_options)
   validate_bool($manage_data_dir)
   validate_string($depend_service)
   validate_bool($install_service)
   validate_bool($manage_service)
+  validate_string($service_name)
   validate_string($service_template)
   validate_string($service_path)
   validate_bool($purge_conf)
-  if ( $override_options['FileSettings'] ) {
-    if ($override_options['FileSettings']['Directory']) {
+  if $override_options['FileSettings'] {
+    if $override_options['FileSettings']['Directory'] {
       $data_dir = $override_options['FileSettings']['Directory']
       validate_absolute_path($data_dir)
     }

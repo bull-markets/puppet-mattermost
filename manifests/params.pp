@@ -2,6 +2,8 @@
 class mattermost::params {
   $fail_msg =
     "OS ${::operatingsystem} ${::operatingsystemrelease} is not supported"
+  $install_from_pkg = false
+  $pkg = 'mattermost-server'
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
   $version = '5.8.0'
@@ -21,6 +23,7 @@ class mattermost::params {
   $depend_service = ''
   $install_service = true
   $manage_service = true
+  $service_name = 'mattermost'
   $purge_conf = false
 
   case $::osfamily {
@@ -28,13 +31,13 @@ class mattermost::params {
       case $::operatingsystemmajrelease {
         '6': {
           $service_template = 'mattermost/sysvinit_el.erb'
-          $service_path     = '/etc/init.d/mattermost'
+          $service_path     = '/etc/init.d/__SERVICENAME__'
           $service_provider = ''
           $service_mode     = '0755'
         }
         '7': {
           $service_template = 'mattermost/systemd.erb'
-          $service_path     = '/etc/systemd/system/mattermost.service'
+          $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
           $service_provider = ''
           $service_mode     = ''
         }
@@ -47,13 +50,13 @@ class mattermost::params {
           case $::operatingsystemmajrelease {
             '6','7': {
               $service_template = 'mattermost/sysvinit_debian.erb'
-              $service_path     = '/etc/init.d/mattermost'
+              $service_path     = '/etc/init.d/__SERVICENAME__'
               $service_provider = ''
               $service_mode     = '0755'
             }
             '8','9': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/etc/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = ''
               $service_mode     = ''
             }
@@ -64,13 +67,13 @@ class mattermost::params {
           case $::operatingsystemmajrelease {
             '12.04', '14.04': {
               $service_template = 'mattermost/upstart.erb'
-              $service_path     = '/etc/init/mattermost.conf'
+              $service_path     = '/etc/init/__SERVICENAME__.conf'
               $service_provider = 'upstart'
               $service_mode     = ''
             }
             '16.04', '17.10', '18.04': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/etc/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'
               $service_mode     = ''
             }
@@ -86,7 +89,7 @@ class mattermost::params {
           case $::operatingsystemmajrelease {
             '12': {
               $service_template = 'mattermost/systemd.erb'
-              $service_path     = '/etc/systemd/system/mattermost.service'
+              $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'
               $service_mode     = ''
             }
