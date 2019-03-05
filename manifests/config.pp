@@ -18,12 +18,18 @@ class mattermost::config inherits mattermost {
       replace => true,
     }
   } else {
-    file { $conf:
-      source  => $source_conf,
-      owner   => $mattermost::user,
-      group   => $mattermost::group,
-      mode    => '0640',
-      replace => false,
+    if $mattermost::install_from_pkg {
+      file { $conf:
+        replace => false,
+      }
+    } else {
+      file { $conf:
+        source  => $source_conf,
+        owner   => $mattermost::user,
+        group   => $mattermost::group,
+        mode    => '0640',
+        replace => false,
+      }
     }
   }
   mattermost_settings{ $conf:

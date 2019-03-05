@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# mattermost        Startup script for mattermost.
+# <%= @service_name %>        Startup script for mattermost.
 #
 # chkconfig: 2345 85 15
 # Mattermost brings your team communication into one place
 ### BEGIN INIT INFO
-# Provides:          mattermost
+# Provides:          <%= @service_name %>
 # Required-Start:    $local_fs $network $named $time $syslog <%= @depend_service %>
 # Required-Stop:     $local_fs $network $named $time $syslog
 # Default-Start:     2 3 4 5
@@ -13,7 +13,7 @@
 # Description:       Mattermost brings your team communication into one place
 ### END INIT INFO
 
-name=mattermost
+name=<%= @service_name %>
 dir=<%= @symlink %>
 exe=bin/<%= @executable %>
 <% if (scope.function_versioncmp(['3.8.0', @version]) > 0) -%>
@@ -22,7 +22,7 @@ exe_args="-config='<%= @conf %>'"
 exe_args="--config '<%= @conf %>'"
 <% end -%>
 uid=<%= @user %>
-pidfile='/var/run/mattermost.pid'
+pidfile='/var/run/<%= @service_name %>.pid'
 
 . /etc/init.d/functions
 

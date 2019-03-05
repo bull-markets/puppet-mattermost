@@ -54,8 +54,8 @@ during Mattermost application upgrades.
 
 The Mattermost module does the following:
 
- - Installs the Mattermost server from a release archive on the web, or an
-   alternative download location within your firewall.
+ - Installs the Mattermost server from a release archive on the web, an
+   alternative download location within your firewall or using a package.
  - Installs and configures a daemon (service) for Mattermost in the format
    native to your operating system.
  - Configures Mattermost according to settings you provide.
@@ -64,14 +64,22 @@ The Mattermost module does the following:
 
 ### What mattermost affects
 
+When using a release archive:
+
 * Downloads and installs Mattermost server
   (defaults to `/opt/mattermost-${version}`).
 * Creates a friendly symbolic link to the installation directory (defaults to
   `/opt/mattermost`).
 * Creates a configuration file (defaults to `/etc/mattermost.json`) based on the
   vendor-provided configuration file and adds user-supplied options.
-* Creates a Mattermost daemon (service) using your operating system's native
-  service provider.
+* Creates and manages a Mattermost daemon (service) using your operating
+  system's native service provider.
+
+When using a package:
+
+* Installs the package.
+* Add user-supplied options to the configuration file.
+* Manages the service .
 
 ### Beginning with mattermost
 
@@ -107,6 +115,32 @@ mattermost::override_options:
 This will install a Mattermost server listening on the default TCP port
 (currently 8065).
 
+The module's default behaviour is to download and install Mattermost using a
+`.tar.gz` archive. The module can instead install Mattermost using a package.
+Here is an example using the `mattermost-server` package in the
+[harbottle-main](https://harbottle.gitlab.io/harbottle-main/7/x86_64/) RPM repo
+for CentOS 7:
+
+```puppet
+yumrepo { 'harbottle-main':
+  baseurl  => 'https://copr-be.cloud.fedoraproject.org/results/harbottle/main/epel-7-$basearch/',
+  descr    => 'harbottle-main',
+  gpgcheck => true,
+  gpgkey   => 'https://copr-be.cloud.fedoraproject.org/results/harbottle/main/pubkey.gpg',
+}
+-> class { 'mattermost':
+  install_from_pkg => true,
+  version          => latest,
+  conf             => '/etc/mattermost/config.json',
+  override_options => {
+    'SqlSettings'  => {
+      'DriverName' => 'postgres',
+      'DataSource' => "postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10",
+    },
+  },
+}
+```
+
 Here is an example of Mattermost using PostgreSQL as a database and NGINX as a
 reverse proxy, all running on the same system (requires
 [puppetlabs/postgresql](https://forge.puppetlabs.com/puppetlabs/postgresql) and
@@ -128,8 +162,8 @@ postgresql::server::database_grant { 'mattermost':
   privilege => 'ALL',
   db        => 'mattermost',
   role      => 'mattermost',
-} ->
-class { 'mattermost':
+}
+-> class { 'mattermost':
   override_options => {
     'SqlSettings' => {
       'DriverName' => 'postgres',
@@ -236,9 +270,12 @@ class { 'mattermost':
 }
 ```
 
-On the next Puppet run, the new version will be downloaded and installed; the
-friendly symbolic link will be changed to point at the new installation
-directory and the service will be refreshed.
+On the next Puppet run, when using a release archive, the new version will be
+downloaded and installed; the friendly symbolic link will be changed to point at
+the new installation directory and the service will be refreshed.
+
+When using a package, the new package will be installed and the service will be
+refreshed.
 
 **Note 1:**  The Mattermost application supports certain upgrade paths only.
 Please see the [upgrade guide](https://docs.mattermost.com/administration/upgrade.html)
@@ -284,15 +321,30 @@ solution will make an effort to update to the secure version within 10 days.
 
 #### mattermost
 
+##### `install_from_pkg`
+
+The default behaviour is to install from a remote Mattermost server release
+archive. Enable this option to instead install from a package. The package
+should be available to install from a existing repository. Defaults to `false`.
+
+**Helpful hint:** The author of this module has has created a
+[package](https://gitlab.com/harbottle/harbottle-main/blob/master/docs/mattermost-server.md)
+suitable for RHEL 7, CentOS 7 and Oracle Linux 7 users.
+
+##### `pkg`
+
+The package name when installing from a package. Defaults to
+`mattermost-server`.
+
 ##### `base_url`
 
-The base URL to download the Mattermost server release archive. Defaults to
-`https://releases.mattermost.com`.
+The base URL to download the Mattermost server release archive. Ignored if
+installing from a package. Defaults to `https://releases.mattermost.com`.
 
 ##### `edition`
 
-The edition of Mattermost server to install. Defaults to `team`. Valid values
-are `team` and `enterprise`.
+The edition of Mattermost server to install. Ignored if installing from a
+package. Defaults to `team`. Valid values are `team` and `enterprise`.
 
 ##### `version`
 
@@ -300,17 +352,18 @@ The version of Mattermost server to install. Defaults to `5.8.0`.
 
 ##### `file_name`
 
-The filename of the remote Mattermost server release archive.
-Defaults to `mattermost-team-${version}-linux-amd64.tar.gz` (for Team edition)
-or `mattermost-${version}-linux-amd64.tar.gz` (for Enterprise edition),
-so with the default `version`, the default value will be
+The filename of the remote Mattermost server release archive. Ignored if
+installing from a package. Defaults to
+`mattermost-team-${version}-linux-amd64.tar.gz` (for Team edition) or
+`mattermost-${version}-linux-amd64.tar.gz` (for Enterprise edition), so with
+the default `version`, the default value will be
 `mattermost-team-5.8.0-linux-amd64.tar.gz`.
 
 ##### `full_url`
 
-The full URL of the Mattermost server release archive. Defaults to
-`${base_url}/${version}/${filename}`, so with the default `base_url`, `edition`,
-`version` and `file_name`, this will be:
+The full URL of the Mattermost server release archive. Ignored if installing
+from a package. Defaults to `${base_url}/${version}/${filename}`, so with the
+default `base_url`, `edition`, `version` and `file_name`, this will be:
 `https://releases.mattermost.com/5.8.0/mattermost-team-5.8.0-linux-amd64.tar.gz`.
 
 **Please note:** If you set `full_url` you should also set `version`
@@ -318,13 +371,13 @@ to match the version of Mattermost server you are installing.
 
 ##### `dir`
 
-The directory to install Mattermost server on your system. Defaults to
-`/opt/mattermost-${version}`.
+The directory to install Mattermost server on your system. Ignored if installing
+from a package. Defaults to `/opt/mattermost-${version}`.
 
 ##### `symlink`
 
 The path of the friendly symbolic link to the versioned Mattermost installation
-directory. Defaults to `/opt/mattermost`.
+directory. Ignored if installing from a package. Defaults to `/opt/mattermost`.
 
 ##### `conf`
 
@@ -333,32 +386,32 @@ The path to Mattermost's config file. Defaults to `/etc/mattermost.json`.
 ##### `create_user`
 
 Should the module create an unprivileged system account that will be used to run
-Mattermost server? Defaults to `true`.
+Mattermost server? Ignored if installing from a package. Defaults to `true`.
 
 ##### `create_group`
 
 Should the module create an unprivileged system group that will be used to run
-Mattermost server? Defaults to `true`.
+Mattermost server? Ignored if installing from a package. Defaults to `true`.
 
 ##### `user`
 
-The name of the unprivileged system account that will be used to run
-Mattermost server. Defaults to `mattermost`.
+The name of the unprivileged system account that will be used to run Mattermost
+server and will own the config file. Defaults to `mattermost`.
 
 ##### `group`
 
-The name of the unprivileged system group that will be used to run
-Mattermost server. Defaults to `mattermost`.
+The name of the unprivileged system group that will be used to run Mattermost
+serverand will own the config file. Defaults to `mattermost`.
 
 ##### `uid`
 
 The uid of the unprivileged system account that will be used to run
-Mattermost server. Defaults to `1500`.
+Mattermost server. Ignored if installing from a package. Defaults to `1500`.
 
 ##### `gid`
 
 The gid of the unprivileged system group that will be used to run
-Mattermost server. Defaults to `1500`.
+Mattermost server. Ignored if installing from a package. Defaults to `1500`.
 
 ##### `override_options`
 
@@ -411,37 +464,42 @@ Defaults to `false`.
 Should the module ensure Mattermost's data directory exists and has the correct
 permissions? This parameter only applies if
 [`override_options['FileSettings']['Directory']`](#override_optionsfilesettingsdirectory)
-is set. Defaults to `true`.
+is set. Ignored if installing from a package. Defaults to `true`.
 
 ##### `depend_service`
 
 The local service (i.e. database service) that Mattermost server needs to start
-when it is installed on the same server as the database backend. Defaults to
-`''` (empty string).
+when it is installed on the same server as the database backend. Ignored if
+installing from a package.Defaults to `''` (empty string).
 
 ##### `install_service`
 
 Should the module install a daemon for Mattermost server appropriate to your
-operating system?  Defaults to `true`.
+operating system? Ignored if installing from a package. Defaults to `true`.
 
 ##### `manage_service`
 
 Should the module manage the installed Mattermost server daemon
 (`ensure => 'running'` and `enable => true`)? Defaults to `true`.
 
+##### `service_name`
+
+The service name. Defaults to `mattermost`.
+
 ##### `service_template`
 
-`ERB` (Embedded RuBy) template to use for the service definition file.  Defaults
-to a bundled template suitable for the server's operating system.
+`ERB` (Embedded RuBy) template to use for the service definition file. Ignored
+if installing from a package. Defaults to a bundled template suitable for the
+server's operating system.
 
 ##### `service_path`
 
-The target path for the service definition file. Defaults to the standard path
-for the server's operating system.
+The target path for the service definition file. Ignored if installing from a
+package. Defaults to the standard path for the server's operating system.
 
 ##### `service_provider`
 
-The Puppet service provider to use for service management.  Defaults to an
+The Puppet service provider to use for service management. Defaults to an
 appropriate value for the server's operating system.
 
 ### Public defined types
