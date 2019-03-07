@@ -454,6 +454,25 @@ class { 'mattermost':
 }
 ```
 
+###### `override_options['LogSettings']['FileLocation']`
+
+An element of the `override_options` hash that specifies the Mattermost log
+directory. Setting this element will result in the directory being created with
+the correct permissions if it does not already exist (unless
+[`manage_log_dir`](#manage_log_dir) is `false`).
+
+An absolute path must be specified. Example:
+
+```puppet
+class { 'mattermost':
+  override_options => {
+    'LogSettings' => {
+      'FileLocation' => '/var/log/mattermost',
+    },
+  },
+}
+```
+
 ##### `purge_conf`
 
 Should the module purge existing settings from Mattermost configuration file?
@@ -464,6 +483,13 @@ Defaults to `false`.
 Should the module ensure Mattermost's data directory exists and has the correct
 permissions? This parameter only applies if
 [`override_options['FileSettings']['Directory']`](#override_optionsfilesettingsdirectory)
+is set. Ignored if installing from a package. Defaults to `true`.
+
+##### `manage_log_dir`
+
+Should the module ensure Mattermost's log directory exists and has the correct
+permissions? This parameter only applies if
+[`override_options['LogSettings']['FileLocation']`](#override_optionslogsettingsfilelocation)
 is set. Ignored if installing from a package. Defaults to `true`.
 
 ##### `depend_service`
