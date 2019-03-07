@@ -104,5 +104,14 @@ class mattermost::install inherits mattermost {
         require => Archive[$download_filename],
       }
     }
+    if $mattermost::log_dir and $mattermost::manage_log_dir{
+      file { $mattermost::log_dir:
+        ensure  => directory,
+        owner   => $mattermost::user,
+        group   => $mattermost::group,
+        mode    => '0754',
+        require => Archive[$download_filename],
+      }
+    }
   }
 }

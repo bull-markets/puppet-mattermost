@@ -18,6 +18,7 @@ class mattermost (
   $conf             = $mattermost::params::conf,
   $override_options = $mattermost::params::override_options,
   $manage_data_dir  = $mattermost::params::manage_data_dir,
+  $manage_log_dir   = $mattermost::params::manage_log_dir,
   $depend_service   = $mattermost::params::depend_service,
   $install_service  = $mattermost::params::install_service,
   $manage_service   = $mattermost::params::manage_service,
@@ -65,6 +66,18 @@ class mattermost (
   }
   else {
     $data_dir = undef
+  }
+  if $override_options['LogSettings'] {
+    if $override_options['LogSettings']['FileLocation'] {
+      $log_dir = $override_options['LogSettings']['FileLocation']
+      validate_absolute_path($log_dir)
+    }
+    else {
+      $log_dir = undef
+    }
+  }
+  else {
+    $log_dir = undef
   }
   if versioncmp($version, '5.0.0') >= 0 {
     $executable = 'mattermost'
