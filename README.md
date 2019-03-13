@@ -84,7 +84,34 @@ When using a package:
 ### Beginning with mattermost
 
 If you have a suitable database installed for Mattermost server to use as a
-backend, this is the minimum you need to get Mattermost server working.
+backend, this is the minimum you need to get Mattermost server working by
+configuring environment variables that will be used by the installed Mattermost
+service:
+
+Using Puppet only:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_SQLSETTINGS_DRIVERNAME' => 'postgres',
+    'MM_SQLSETTINGS_DATASOURCE' => "postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10",
+  },
+}
+```
+
+Using Puppet and Hiera:
+
+```puppet
+include mattermost
+```
+
+```yaml
+mattermost::override_env_options:
+  MM_SQLSETTINGS_DRIVERNAME: postgres
+  MM_SQLSETTINGS_DATASOURCE: postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10
+```
+
+Alternatively, the minimum configuration can be supplied by configuring Mattermost's json config file:
 
 Using Puppet only:
 
@@ -112,7 +139,7 @@ mattermost::override_options:
     DataSource: postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10
 ```
 
-This will install a Mattermost server listening on the default TCP port
+Any of these options will install a Mattermost server listening on the default TCP port
 (currently 8065).
 
 The module's default behaviour is to download and install Mattermost using a
@@ -192,7 +219,15 @@ the NGINX reverse proxy listening on port 80.
 
 ## Usage
 
-Use `override_options` to change Mattermost's default settings:
+Mattermost [config settings](https://docs.mattermost.com/administration/config-settings.html)
+can be set using environment variables or a json file.
+
+Configuration options supplied using environment variables takes precedence over options
+supplied using the json file and disable modification using the Service Console.
+
+You must decide which method to use.
+
+Use `override_options` to change Mattermost's default settings by modifying the json file:
 
 ```puppet
 class { 'mattermost':
@@ -214,7 +249,22 @@ class { 'mattermost':
 }
 ```
 
-Store file data, such as file uploads, in a separate directory (recommended):
+Use `override_env_options` to change Mattermost's default settings by modifying the environment variables:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_SERVICESETTINGS_LISTENADDRESS' => ":80",
+    'MM_TEAMSETTINGS_SITENAME'         => 'BigCorp Collaboration',
+    'MM_SQLSETTINGS_DRIVERNAME'        => 'postgres',
+    'MM_SQLSETTINGS_DATASOURCE'        => "postgres://mattermost:mattermost@127.0.0.1:5432/mattermost?sslmode=disable&connect_timeout=10",
+    'MM_FILESETTINGS_DIRECTORY'        => '/var/mattermost',
+    },
+  }
+}
+```
+
+Store file data, such as file uploads, in a separate directory (recommended), json file method:
 
 ```puppet
 class { 'mattermost':
@@ -222,6 +272,16 @@ class { 'mattermost':
     'FileSettings' => {
       'Directory' => '/var/mattermost',
     },
+  },
+}
+```
+
+Store file data, such as file uploads, in a separate directory (recommended), environment variables method:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_FILESETTINGS_DIRECTORY' => '/var/mattermost',
   },
 }
 ```
@@ -287,6 +347,16 @@ before upgrades.
 **Note 3:** For a seamless upgrade you should store your file data outside of
 the Mattermost installation directory so that your uploaded files are still
 accessible after each upgrade. For example:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_FILESETTINGS_DIRECTORY' => '/var/mattermost',
+  },
+}
+```
+
+or
 
 ```puppet
 class { 'mattermost':
@@ -383,6 +453,12 @@ directory. Ignored if installing from a package. Defaults to `/opt/mattermost`.
 
 The path to Mattermost's config file. Defaults to `/etc/mattermost.json`.
 
+##### `env_conf`
+
+The path to Mattermost's environment variable config file. Defaults to
+`/etc/sysconfig/mattermost` (Enterprise Linux/SLES) or `/etc/default/mattermost`
+(Debian/Ubuntu).
+
 ##### `create_user`
 
 Should the module create an unprivileged system account that will be used to run
@@ -414,12 +490,20 @@ The gid of the unprivileged system group that will be used to run
 Mattermost server. Ignored if installing from a package. Defaults to `1500`.
 
 ##### `override_options`
+Mattermost [config settings](https://docs.mattermost.com/administration/config-settings.html)
+can be set using environment variables or a json file.
 
-A hash containing overrides to the default settings contained in Mattermost's
-[config file](https://github.com/mattermost/mattermost-server/blob/master/config/default.json).
+Configuration options supplied using environment variables takes precedence over options
+supplied using the json file and disable modification using ther Service Console.
+
+You must decide which method to use.
+
+This is a hash containing overrides to the default settings contained in Mattermost's
+[json config file](https://github.com/mattermost/mattermost-server/blob/master/config/default.json).
 Defaults to `{}` (empty hash).
 
-**Note 1:** You should at least specify `SqlSettings`, e.g.:
+**Note 1:** If you decide to configure Mattermost using a json file,
+you should at least specify `SqlSettings`, e.g.:
 
 ```puppet
 class { 'mattermost':
@@ -442,6 +526,9 @@ directory. Setting this element will result in the directory being created with
 the correct permissions if it does not already exist (unless
 [`manage_data_dir`](#manage_data_dir) is `false`).
 
+**Note:** [`override_env_options['MM_FILESETTINGS_DIRECTORY']`](#override_env_optionsmm_filesettings_directory)
+takes precedence over this element.
+
 An absolute path must be specified. Example:
 
 ```puppet
@@ -461,6 +548,9 @@ directory. Setting this element will result in the directory being created with
 the correct permissions if it does not already exist (unless
 [`manage_log_dir`](#manage_log_dir) is `false`).
 
+**Note:** [`override_env_options['MM_LOGSETTINGS_FILELOCATION']`](#override_env_optionsmm_logsettings_filelocation)
+takes precedence over this element.
+
 An absolute path must be specified. Example:
 
 ```puppet
@@ -473,9 +563,81 @@ class { 'mattermost':
 }
 ```
 
+##### `override_env_options`
+
+Mattermost [config settings](https://docs.mattermost.com/administration/config-settings.html)
+can be set using environment variables or a json file.
+
+Configuration options supplied using environment variables takes precedence over options
+supplied using the json file and disable modification using ther Service Console.
+
+You must decide which method to use.
+
+This is a hash containing overrides to Mattermost's environment variables that
+will be stored in the [`env_conf`](#env_conf) environment variable file.
+Defaults to `{}` (empty hash).
+
+**Note 1:** If you decide to configure Mattermost using environment variables,
+you should at least specify database settings, e.g.:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_SQL_SETTINGS_DRIVERNAME' => 'postgres',
+    'MM_SQL_SETTINGS_DATASOURCE' => "postgres://db_user:db_pass@db_host:db_port/mattermost?sslmode=disable&connect_timeout=10",
+  },
+}
+```
+
+**Note 2:** To purge existing settings from the environment variable file, use the
+[`purge_env_conf`](#purge_env_conf) parameter.
+
+###### `override_env_options['MM_FILESETTINGS_DIRECTORY']`
+
+An element of the `override_env_options` hash that specifies the Mattermost data
+directory. Setting this element will result in the directory being created with
+the correct permissions if it does not already exist (unless
+[`manage_data_dir`](#manage_data_dir) is `false`).
+
+**Note:** This takes precedence over [`override_options['FileSettings']['Directory']`](#override_optionsfilesettingsdirectory)
+
+An absolute path must be specified. Example:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_FILESETTINGS_DIRECTORY' => '/var/mattermost',
+  },
+}
+```
+
+###### `override_env_options['MM_LOGSETTINGS_FILELOCATION']`
+
+An element of the `override_env_options` hash that specifies the Mattermost log
+directory. Setting this element will result in the directory being created with
+the correct permissions if it does not already exist (unless
+[`manage_log_dir`](#manage_log_dir) is `false`).
+
+**Note:** This takes precedence over [`override_options['LogSettings']['FileLocation']`](#override_optionslogsettingsfilelocation)
+
+An absolute path must be specified. Example:
+
+```puppet
+class { 'mattermost':
+  override_env_options => {
+    'MM_LOGSETTINGS_FILELOCATION' => '/var/log/mattermost',
+  },
+}
+```
+
 ##### `purge_conf`
 
 Should the module purge existing settings from Mattermost configuration file?
+Defaults to `false`.
+
+##### `purge_env_conf`
+
+Should the module purge existing settings from Mattermost environment variable file?
 Defaults to `false`.
 
 ##### `manage_data_dir`

@@ -31,6 +31,7 @@ class mattermost::install inherits mattermost {
     '__DIR__',
     $dir
   )
+  $env_conf = $mattermost::env_conf
   $mode = $mattermost::service_mode? {
     ''      => undef,
     default => $mattermost::service_mode,

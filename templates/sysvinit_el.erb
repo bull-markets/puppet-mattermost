@@ -26,6 +26,9 @@ pidfile='/var/run/<%= @service_name %>.pid'
 
 . /etc/init.d/functions
 
+set -a
+[ -r <%= @env_conf %> ] && . <%= @env_conf %>
+
 start() {
   echo "Starting daemon: " ${name}
   # start the program
