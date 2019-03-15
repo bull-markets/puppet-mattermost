@@ -1,3 +1,11 @@
+2019-03-15 Richard Grainger <harbottle@room3d3.com> - 3.0.0
+* Default to Mattermost 5.9.0 [@harbottle]
+* Support configuration by environment variables [#40] [@harbottle]
+* Manage log directory [#45] [@harbottle]
+* Update support matrix [#39] [@harbottle]
+* Allow install from package [#43] [@harbottle]
+* Change config file permissions [!97] [@fr3nd]
+
 2019-02-16 Carlos Panato <ctadeu@gmail.com> - 2.11.0
 * Default to Mattermost 5.8.0
 
