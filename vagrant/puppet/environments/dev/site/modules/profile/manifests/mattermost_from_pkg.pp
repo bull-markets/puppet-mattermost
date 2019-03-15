@@ -30,14 +30,10 @@ class profile::mattermost_from_pkg {
     install_from_pkg => true,
     version          => latest,
     conf             => '/etc/mattermost/config.json',
-    override_options => {
-      'SqlSettings'  => {
-        'DriverName' => 'postgres',
-        'DataSource' => 'postgres://mattermost:mattermost@127.0.0.1:5432/mattermost?sslmode=disable&connect_timeout=10',
-      },
-      'TeamSettings' => {
-        'SiteName'   => 'Dev Team',
-      },
+    override_env_options => {
+      'MM_SQLSETTINGS_DRIVERNAME' => 'postgres',
+      'MM_SQLSETTINGS_DATASOURCE' => 'postgres://mattermost:mattermost@127.0.0.1:5432/mattermost?sslmode=disable&connect_timeout=10',
+      'MM_TEAMSETTINGS_SITENAME'  => 'Dev Team',
     },
     require          =>[
       Postgresql::Server::Db['mattermost'],
