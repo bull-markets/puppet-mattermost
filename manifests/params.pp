@@ -19,6 +19,7 @@ class mattermost::params {
   $uid = '1500'
   $gid = '1500'
   $override_options = {}
+  $override_env_options = {}
   $manage_data_dir = true
   $manage_log_dir = true
   $depend_service = ''
@@ -26,9 +27,10 @@ class mattermost::params {
   $manage_service = true
   $service_name = 'mattermost'
   $purge_conf = false
-
+  $purge_env_conf = false
   case $::osfamily {
     'RedHat': {
+      $env_conf = '/etc/sysconfig/mattermost'
       case $::operatingsystemmajrelease {
         '6': {
           $service_template = 'mattermost/sysvinit_el.erb'
@@ -46,6 +48,7 @@ class mattermost::params {
       }
     }
     'Debian': {
+      $env_conf = '/etc/default/mattermost'
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemmajrelease {
@@ -85,6 +88,7 @@ class mattermost::params {
       }
     }
     'Suse': {
+      $env_conf = '/etc/sysconfig/mattermost'
       case $::operatingsystem {
         'SLES': {
           case $::operatingsystemmajrelease {

@@ -21,6 +21,9 @@ pidfile='/var/run/<%= @service_name %>.pid'
 
 . /lib/lsb/init-functions
 
+set -a
+[ -r <%= @env_conf %> ] && . <%= @env_conf %>
+
 start() {
   echo "Starting daemon: " ${name}
   # start the program

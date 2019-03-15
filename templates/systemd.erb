@@ -8,6 +8,7 @@ After=syslog.target network.target
 <% end -%>
 
 [Service]
+EnvironmentFile=<%= @env_conf %>
 Type=simple
 WorkingDirectory=<%= @symlink %>
 User=<%= @user %>

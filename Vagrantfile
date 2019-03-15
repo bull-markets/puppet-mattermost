@@ -3,7 +3,7 @@
 
 $el = <<'EL'
 setenforce 0
-export release=$(sed -r 's/^.* ([0-9]).*$/\1/g' /etc/redhat-release)
+release=$(sed -r 's/^.* ([0-9]).*$/\1/g' /etc/redhat-release)
 rpm -q puppet6-release || yum -y install https://yum.puppetlabs.com/puppet6/puppet6-release-el-${release}.noarch.rpm
 rpm -q puppet-agent || yum -y install puppet-agent
 EL
@@ -17,12 +17,17 @@ service iptables status || {
 CENTOS6
 
 $debian = <<DEBIAN
-export release=$(dpkg --status tzdata|grep Provides|cut -f2 -d'-')
+release=$(dpkg --status tzdata|grep Provides|cut -f2 -d'-')
+if [ "$release" == "wheezy" ]; then
+  version='5'
+else
+  version='6'
+fi 
 dpkg -l puppet-agent || {
   apt-get update
   apt-get -y install apt-transport-https wget
-  wget https://apt.puppetlabs.com/puppet6-release-${release}.deb
-  dpkg -i puppet6-release-${release}.deb
+  wget https://apt.puppetlabs.com/puppet${version}-release-${release}.deb
+  dpkg -i puppet${version}-release-${release}.deb
   apt-get update
   apt-get -y install puppet-agent
 }
@@ -65,6 +70,23 @@ Vagrant.configure("2") do |config|
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
+  config.vm.define "centos6env" do |host|
+    host.vm.box = "centos/6"
+    host.vm.hostname = "centos6env.test"
+    host.vm.network :private_network, ip: "172.16.3.12"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $centos6
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+      puppet.options = "--verbose --debug"
+    end
+  end
   config.vm.define "centos7" do |host|
     host.vm.box = "centos/7"
     host.vm.hostname = "centos7.test"
@@ -80,9 +102,9 @@ Vagrant.configure("2") do |config|
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
-  config.vm.define "centos7pkg" do |host|
+  config.vm.define "centos7env" do |host|
     host.vm.box = "centos/7"
-    host.vm.hostname = "centos7pkg.test"
+    host.vm.hostname = "centos7env.test"
     host.vm.network :private_network, ip: "172.16.3.14"
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
@@ -95,10 +117,57 @@ Vagrant.configure("2") do |config|
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
+  config.vm.define "centos7pkg" do |host|
+    host.vm.box = "centos/7"
+    host.vm.hostname = "centos7pkg.test"
+    host.vm.network :private_network, ip: "172.16.3.21"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
+  config.vm.define "wheezyenv" do |host|
+    host.vm.box = "alxgrh/debian-wheezy-x86_64"
+    host.vm.hostname = "wheezyenv.test"
+    host.vm.network :private_network, ip: "172.16.4.14"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
   config.vm.define "stretch" do |host|
     host.vm.box = "generic/debian9"
     host.vm.hostname = "stretch.test"
     host.vm.network :private_network, ip: "172.16.4.9"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
+  config.vm.define "trustyenv" do |host|
+    host.vm.box = "peru/ubuntu-14.04-server-amd64"
+    host.vm.hostname = "trustyenv.test"
+    host.vm.network :private_network, ip: "172.16.21.28"
     host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
