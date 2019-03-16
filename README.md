@@ -66,19 +66,22 @@ The Mattermost module does the following:
 
 When using a release archive:
 
-* Downloads and installs Mattermost server
-  (defaults to `/opt/mattermost-${version}`).
+* Downloads and installs Mattermost server (defaults to
+  `/opt/mattermost-${version}`).
 * Creates a friendly symbolic link to the installation directory (defaults to
   `/opt/mattermost`).
-* Creates a configuration file (defaults to `/etc/mattermost.json`) based on the
-  vendor-provided configuration file and adds user-supplied options.
+* Creates a configuration file (defaults to `/etc/mattermost.json`) based on
+  the vendor-provided configuration file and adds user-supplied options.
+* Create an environment variable configuration file (defaults to
+  `/etc/sysconfig/mattermost` or `/etc/default/mattermost` depending on
+  platform) and add user-supplied options.
 * Creates and manages a Mattermost daemon (service) using your operating
   system's native service provider.
 
 When using a package:
 
 * Installs the package.
-* Add user-supplied options to the configuration file.
+* Add user-supplied options to the configuration files.
 * Manages the service .
 
 ### Beginning with mattermost
@@ -223,7 +226,7 @@ Mattermost [config settings](https://docs.mattermost.com/administration/config-s
 can be set using environment variables or a json file.
 
 Configuration options supplied using environment variables takes precedence over options
-supplied using the json file and disable modification using the Service Console.
+supplied using the json file and they disable modification using the Service Console.
 
 You must decide which method to use.
 
@@ -249,7 +252,7 @@ class { 'mattermost':
 }
 ```
 
-Use `override_env_options` to change Mattermost's default settings by modifying the environment variables:
+Use `override_env_options` to change Mattermost's default settings by modifying environment variables:
 
 ```puppet
 class { 'mattermost':
@@ -369,8 +372,9 @@ class { 'mattermost':
 ```
 
 #### Security Updates
-We highly recommend users subscribe to the Mattermost security updates email
-list. When notified of a security update, the maintainers of this deployment
+We highly recommend users subscribe to the
+[Mattermost security updates email list](https://mattermost.com/blog/category/security-updates/).
+When notified of a security update, the maintainers of this deployment
 solution will make an effort to update to the secure version within 10 days.
 
 ## Reference
@@ -381,9 +385,9 @@ solution will make an effort to update to the secure version within 10 days.
 
 ### Private classes
 
- - `mattermost::install`: Installs the Mattermost server from a web archive and
-   optionally installs a daemon (service) for Mattermost in the format native
-   to your operating system.
+ - `mattermost::install`: Installs the Mattermost server from a web archive or
+   using a package and optionally installs a daemon (service) for Mattermost in
+   the format native to your operating system.
  - `mattermost::config`: Configures Mattermost according to provided settings.
  - `mattermost::service`: Manages the Mattermost daemon.
 
@@ -644,6 +648,8 @@ Defaults to `false`.
 
 Should the module ensure Mattermost's data directory exists and has the correct
 permissions? This parameter only applies if
+[`override_env_options['MM_FILESETTINGS_DIRECTORY']`](#override_env_optionsmm_filesettings_directory)
+or
 [`override_options['FileSettings']['Directory']`](#override_optionsfilesettingsdirectory)
 is set. Ignored if installing from a package. Defaults to `true`.
 
@@ -651,6 +657,8 @@ is set. Ignored if installing from a package. Defaults to `true`.
 
 Should the module ensure Mattermost's log directory exists and has the correct
 permissions? This parameter only applies if
+[`override_env_options['MM_LOGSETTINGS_FILELOCATION']`](#override_env_optionsmm_logsettings_filelocation)
+or
 [`override_options['LogSettings']['FileLocation']`](#override_optionslogsettingsfilelocation)
 is set. Ignored if installing from a package. Defaults to `true`.
 
