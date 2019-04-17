@@ -1,3 +1,6 @@
+2019-04-16 Richard Grainger <harbottle@room3d3.com> - 3.1.0
+* Default to Mattermost 5.10.0
+
 2019-03-15 Richard Grainger <harbottle@room3d3.com> - 3.0.0
 * Default to Mattermost 5.9.0 [@harbottle]
 * Support configuration by environment variables [#40] [@harbottle]
