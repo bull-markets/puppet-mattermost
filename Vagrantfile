@@ -17,20 +17,32 @@ service iptables status || {
 CENTOS6
 
 $debian = <<DEBIAN
-release=$(dpkg --status tzdata|grep Provides|cut -f2 -d'-')
+if grep UBUNTU_CODENAME /etc/os-release ; then
+  release=$(grep UBUNTU_CODENAME /etc/os-release|cut -f2 -d'=')
+else
+  release=$(dpkg --status tzdata|grep Provides|cut -f2 -d'-')
+fi
 if [ "$release" == "wheezy" ]; then
   version='5'
 else
   version='6'
-fi 
-dpkg -l puppet-agent || {
-  apt-get update
-  apt-get -y install apt-transport-https wget
-  wget https://apt.puppetlabs.com/puppet${version}-release-${release}.deb
-  dpkg -i puppet${version}-release-${release}.deb
-  apt-get update
-  apt-get -y install puppet-agent
-}
+fi
+if [ "$release" == "disco" ]; then
+  if ! dpkg -l puppet ; then
+    apt-get update
+    apt-get -y install apt-transport-https wget
+    apt-get -y install puppet
+  fi
+else 
+  if ! dpkg -l puppet-agent ; then
+    apt-get update
+    apt-get -y install apt-transport-https wget
+    wget https://apt.puppetlabs.com/puppet${version}-release-${release}.deb
+    dpkg -i puppet${version}-release-${release}.deb
+    apt-get update
+    apt-get -y install puppet-agent
+  fi
+fi
 DEBIAN
 
 $module = <<MODULE
@@ -184,6 +196,22 @@ Vagrant.configure("2") do |config|
     host.vm.box = "generic/ubuntu1604"
     host.vm.hostname = "xenial.test"
     host.vm.network :private_network, ip: "172.16.21.16"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
+  config.vm.define "disco" do |host|
+    host.vm.box = "generic/ubuntu1904"
+    host.vm.hostname = "disco.test"
+    host.vm.network :private_network, ip: "172.16.21.19"
     host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
