@@ -293,7 +293,7 @@ Install a specific version:
 
 ```puppet
 class { 'mattermost':
-  version => '5.11.0',
+  version => '5.12.2',
 }
 ```
 
@@ -317,7 +317,7 @@ Download from an internal server:
 
 ```puppet
 class { 'mattermost':
-  version  => '5.11.0',
+  version  => '5.12.2',
   full_url => 'http://intranet.bigcorp.com/packages/mattermost.tar.gz',
 }
 ```
@@ -329,7 +329,7 @@ just specify the new version when it has been released, for example:
 
 ```puppet
 class { 'mattermost':
-  version => '5.11.0',
+  version => '5.12.2',
 }
 ```
 
@@ -422,7 +422,7 @@ package. Defaults to `team`. Valid values are `team` and `enterprise`.
 
 ##### `version`
 
-The version of Mattermost server to install. Defaults to `5.11.0`.
+The version of Mattermost server to install. Defaults to `5.12.2`.
 
 ##### `file_name`
 
@@ -431,14 +431,14 @@ installing from a package. Defaults to
 `mattermost-team-${version}-linux-amd64.tar.gz` (for Team edition) or
 `mattermost-${version}-linux-amd64.tar.gz` (for Enterprise edition), so with
 the default `version`, the default value will be
-`mattermost-team-5.11.0-linux-amd64.tar.gz`.
+`mattermost-team-5.12.2-linux-amd64.tar.gz`.
 
 ##### `full_url`
 
 The full URL of the Mattermost server release archive. Ignored if installing
 from a package. Defaults to `${base_url}/${version}/${filename}`, so with the
 default `base_url`, `edition`, `version` and `file_name`, this will be:
-`https://releases.mattermost.com/5.11.0/mattermost-team-5.11.0-linux-amd64.tar.gz`.
+`https://releases.mattermost.com/5.12.2/mattermost-team-5.12.2-linux-amd64.tar.gz`.
 
 **Please note:** If you set `full_url` you should also set `version`
 to match the version of Mattermost server you are installing.
@@ -776,7 +776,7 @@ This module has been tested on:
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
 * Debian 7, 8, 9
-* Ubuntu 12.04, 14.04, 16.04, 18.04, 18.10
+* Ubuntu 14.04, 16.04, 18.04, 18.10, 19.04
 * SLES 12, 15
 
 **Note:** According to the

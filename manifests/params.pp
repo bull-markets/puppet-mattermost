@@ -6,7 +6,7 @@ class mattermost::params {
   $pkg = 'mattermost-server'
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '5.11.0'
+  $version = '5.12.2'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
@@ -69,13 +69,13 @@ class mattermost::params {
         }
         'Ubuntu': {
           case $::operatingsystemmajrelease {
-            '12.04', '14.04': {
+            '14.04': {
               $service_template = 'mattermost/upstart.erb'
               $service_path     = '/etc/init/__SERVICENAME__.conf'
               $service_provider = 'upstart'
               $service_mode     = ''
             }
-            '16.04', '18.04', '18.10': {
+            '16.04', '18.04', '18.10', '19.04': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'
