@@ -771,7 +771,7 @@ This module has been tested with Puppet 3, 4, 5 and 6.
 
 This module has been tested on:
 
-* Red Hat Enterprise Linux 6, 7
+* Red Hat Enterprise Linux 6, 7, 8
 * CentOS 6, 7
 * Oracle Linux 6, 7
 * Scientific Linux 6, 7
