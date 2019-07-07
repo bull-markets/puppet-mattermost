@@ -1,3 +1,6 @@
+2019-07-07 Richard Grainger <harbottle@room3d3.com> - 3.4.0
+* Add support for Debian 10 (buster)
+
 2019-07-06 Richard Grainger <harbottle@room3d3.com> - 3.3.0
 * Default to Mattermost 5.12.2
 * Remove support for Ubuntu 12.04

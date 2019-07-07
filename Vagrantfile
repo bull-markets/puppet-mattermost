@@ -27,7 +27,7 @@ if [ "$release" == "wheezy" ]; then
 else
   version='6'
 fi
-if [ "$release" == "disco" ]; then
+if [ "$release" == "disco" ] || [ "$release" == "buster" ]; then
   if ! dpkg -l puppet ; then
     apt-get update
     apt-get -y install apt-transport-https wget
@@ -164,6 +164,22 @@ Vagrant.configure("2") do |config|
     host.vm.box = "generic/debian9"
     host.vm.hostname = "stretch.test"
     host.vm.network :private_network, ip: "172.16.4.9"
+    host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $debian
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
+  config.vm.define "buster" do |host|
+    host.vm.box = "generic/debian10"
+    host.vm.hostname = "buster.test"
+    host.vm.network :private_network, ip: "172.16.4.10"
     host.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 3, nfs_udp: false
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
