@@ -12,7 +12,7 @@ mod 'nginx',
   :commit => 'f081b84f0c2c87cfb2966ff43769aeab73107fdb'
 mod 'postgresql',
   :git    => 'https://github.com/puppetlabs/puppetlabs-postgresql.git',
-  :commit => '07468888898cf143c5a65ab2df9b4d962027c8ad'
+  :commit => '9c4ae79b8f5f202cdc92075deead716c07bf7b64'
 mod 'archive',
   :git    => 'https://github.com/voxpupuli/puppet-archive.git',
   :commit => '30594f39c56603fc9d1d9a5232c2cff66af1d8af'
