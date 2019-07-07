@@ -144,6 +144,25 @@ Vagrant.configure("2") do |config|
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
     end
   end
+  # RHEL boxes require registration
+  # See: https://github.com/projectatomic/adb-vagrant-registration
+  # See: https://github.com/projectatomic/adb-vagrant-registration/issues/126#issuecomment-380931941
+  config.vm.define "rhel8" do |host|
+    host.vm.box = "generic/rhel8"
+    host.vm.hostname = "rhel8.test"
+    host.vm.network :private_network, ip: "172.16.18.8"
+    host.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+    host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
+    host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
+    host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
+    host.vm.provision "shell", inline: $el
+    host.vm.provision "shell", inline: $module
+    host.vm.provision "puppet" do |puppet|
+      puppet.environment_path = "vagrant/puppet/environments"
+      puppet.environment = "dev"
+      puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+    end
+  end
   config.vm.define "wheezyenv" do |host|
     host.vm.box = "alxgrh/debian-wheezy-x86_64"
     host.vm.hostname = "wheezyenv.test"

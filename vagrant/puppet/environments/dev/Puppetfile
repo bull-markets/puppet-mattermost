@@ -6,7 +6,7 @@ mod 'concat',
   :commit => '22c5b2fb26e5b60ede1355ecc47d18ae49419614'
 mod 'firewall',
   :git    => 'https://github.com/puppetlabs/puppetlabs-firewall.git',
-  :commit => '5d059e719b0b7a757dcbf155b51f6af4b1886bd8'
+  :commit => '2283aed36aae48366c2af69aad0ce2b5cbb0b048'
 mod 'nginx',
   :git    => 'https://github.com/voxpupuli/puppet-nginx.git',
   :commit => 'f081b84f0c2c87cfb2966ff43769aeab73107fdb'
