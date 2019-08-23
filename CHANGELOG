@@ -1,3 +1,6 @@
+2019-08-20 Jeoffrey Bauvin <jeoffrey54@gmail.com> - 3.5.0
+* Default to Mattermost 5.14.0
+
 2019-07-07 Richard Grainger <harbottle@room3d3.com> - 3.4.0
 * Add support for Debian 10 (buster)
 * Add support for RHEL 8
