@@ -6,7 +6,7 @@ class mattermost::params {
   $pkg = 'mattermost-server'
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '5.15.0'
+  $version = '5.15.1'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
