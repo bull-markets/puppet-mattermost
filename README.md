@@ -774,7 +774,7 @@ This module has been tested on:
 * Red Hat Enterprise Linux 6, 7, 8
 * CentOS 6, 7, 8
 * Oracle Linux 6, 7, 8
-* Scientific Linux 6, 7, 8
+* Scientific Linux 6, 7
 * Debian 8, 9, 10
 * Ubuntu 14.04, 16.04, 18.04, 19.04
 * SLES 12, 15
