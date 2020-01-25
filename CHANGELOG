@@ -1,3 +1,7 @@
+2020-01-25 Richard Grainger <harbottle@room3d3.com> - 3.8.0
+* Default to Mattermost 5.19.1
+* Update supported OS
+
 2019-10-18 Carlos Panato <ctadeu@gmail.com> - 3.7.0
 * Default to Mattermost 5.16.0
 
