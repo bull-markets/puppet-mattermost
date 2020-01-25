@@ -57,10 +57,10 @@ this project by doing the following:
 1) In the **master branch**
 
 - Change the version number to the latest release in:
-  * metadata.json
-  * CHANGELOG
-  * README.md
-  * manifests/config.pp
+  * `metadata.json`
+  * `CHANGELOG`
+  * `README.md`
+  * `manifests/params.pp`
 
 2) Release a new forge module.
 
