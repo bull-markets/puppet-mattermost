@@ -2,7 +2,7 @@
 
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/liger1978/mattermost.svg)](https://forge.puppetlabs.com/liger1978/mattermost)
 [![Puppet Forge - scores](https://img.shields.io/puppetforge/f/liger1978/mattermost.svg)](https://forge.puppetlabs.com/liger1978/mattermost)
-[![GitLab - build status](https://gitlab.com/harbottle/puppet-mattermost/badges/master/build.svg)](https://gitlab.com/harbottle/puppet-mattermost/builds)
+[![GitLab - build status](https://gitlab.com/harbottle/puppet-mattermost/badges/master/pipeline.svg)](https://gitlab.com/harbottle/puppet-mattermost/pipelines)
 
 #### Table of Contents
 
