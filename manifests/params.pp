@@ -6,7 +6,7 @@ class mattermost::params {
   $pkg = 'mattermost-server'
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '5.16.0'
+  $version = '5.19.1'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
@@ -52,12 +52,6 @@ class mattermost::params {
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemmajrelease {
-            '7': {
-              $service_template = 'mattermost/sysvinit_debian.erb'
-              $service_path     = '/etc/init.d/__SERVICENAME__'
-              $service_provider = ''
-              $service_mode     = '0755'
-            }
             '8','9','10': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
@@ -75,7 +69,7 @@ class mattermost::params {
               $service_provider = 'upstart'
               $service_mode     = ''
             }
-            '16.04', '18.04', '18.10', '19.04': {
+            '16.04', '18.04', '19.10': {
               $service_template = 'mattermost/systemd.erb'
               $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
               $service_provider = 'systemd'

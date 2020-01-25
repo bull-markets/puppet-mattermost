@@ -78,13 +78,14 @@ Maintainers should periodically review pull requests and issues submitted to pro
 
 ### Contributors
 
-| Name                 | GitLab ID                                                  | GitHub ID                                       |
-|:---------------------|:-----------------------------------------------------------|:------------------------------------------------|
-| Carles Amigó         | [@fr3nd](https://gitlab.com/fr3nd)                         | [@fr3nd](https://github.com/fr3nd)              |
-| Francesco Canovai    | [@francesco.canovai](https://gitlab.com/francesco.canovai) | [@fcanovai](https://github.com/fcanovai)        |
-| Richard Grainger     | [@harbottle](https://gitlab.com/harbottle)                 | [@liger1978](https://github.com/liger1978)      |
-| Garrett Guillotte    | [@oznogon](https://gitlab.com/oznogon)                     | [@gguillotte](https://github.com/gguillotte)    |
-| Christopher Jenkins  | [@christj](https://gitlab.com/christj)                     | [@sevendials](https://github.com/sevendials)    |
-| Martin Krebs         | [@mtkr](https://gitlab.com/mtkr)                           | [@posteingang](https://github.com/posteingang)  |
-| Marco Nenciarini     | [@mnencia](https://gitlab.com/mnencia)                     | [@mnencia](https://github.com/mnencia)          |
-| Carlos Panato        | [@cpanato](https://gitlab.com/cpanato)                     | [@cpanato](https://github.com/cpanato)          |
+| Name                 | GitLab ID                                                  | GitHub ID                                             |
+|:---------------------|:-----------------------------------------------------------|:------------------------------------------------------|
+| Carles Amigó         | [@fr3nd](https://gitlab.com/fr3nd)                         | [@fr3nd](https://github.com/fr3nd)                    |
+| Jeoffrey Bauvin      | [@JeoffreyB](https://gitlab.com/JeoffreyB)                 | [@Jeoffreybauvin](https://github.com/Jeoffreybauvin)  |
+| Francesco Canovai    | [@francesco.canovai](https://gitlab.com/francesco.canovai) | [@fcanovai](https://github.com/fcanovai)              |
+| Richard Grainger     | [@harbottle](https://gitlab.com/harbottle)                 | [@liger1978](https://github.com/liger1978)            |
+| Garrett Guillotte    | [@oznogon](https://gitlab.com/oznogon)                     | [@gguillotte](https://github.com/gguillotte)          |
+| Christopher Jenkins  | [@christj](https://gitlab.com/christj)                     | [@sevendials](https://github.com/sevendials)          |
+| Martin Krebs         | [@mtkr](https://gitlab.com/mtkr)                           | [@posteingang](https://github.com/posteingang)        |
+| Marco Nenciarini     | [@mnencia](https://gitlab.com/mnencia)                     | [@mnencia](https://github.com/mnencia)                |
+| Carlos Panato        | [@cpanato](https://gitlab.com/cpanato)                     | [@cpanato](https://github.com/cpanato)                |
