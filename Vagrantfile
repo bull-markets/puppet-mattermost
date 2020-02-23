@@ -103,6 +103,7 @@ Vagrant.configure("2") do |config|
     host.vm.box = "centos/7"
     host.vm.hostname = "centos7.test"
     host.vm.network :private_network, ip: "172.16.3.7"
+    host.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
     host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
@@ -112,12 +113,14 @@ Vagrant.configure("2") do |config|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+      puppet.synced_folder_type ="rsync"
     end
   end
   config.vm.define "centos7env" do |host|
     host.vm.box = "centos/7"
     host.vm.hostname = "centos7env.test"
     host.vm.network :private_network, ip: "172.16.3.14"
+    host.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
     host.r10k.puppet_dir = "vagrant/puppet/environments/dev"
     host.r10k.module_path = 'vagrant/puppet/environments/dev/modules'
     host.r10k.puppetfile_path = "vagrant/puppet/environments/dev/Puppetfile"
@@ -127,6 +130,7 @@ Vagrant.configure("2") do |config|
       puppet.environment_path = "vagrant/puppet/environments"
       puppet.environment = "dev"
       puppet.hiera_config_path = "vagrant/puppet/environments/dev/hiera.yaml"
+      puppet.synced_folder_type ="rsync"
     end
   end
   config.vm.define "centos7pkg" do |host|

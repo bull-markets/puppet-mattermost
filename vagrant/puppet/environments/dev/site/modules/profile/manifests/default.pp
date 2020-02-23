@@ -1,10 +1,4 @@
 class profile::default {
-  # Swap file
-  Service {
-    require => Class['swap::config']
-  }
-  class { 'swap::config': }
-
   # Firewall
   Firewall {
     before  => Class['my_fw::post'],
