@@ -1,7 +1,11 @@
+2020-03-14 Richard Grainger <harbottle@room3d3.com> - 3.10.0
+* Default to Mattermost 5.21.0
+* Support Arch
+
 2020-02-23 Richard Grainger <harbottle@room3d3.com> - 3.9.0
 * Mattercon 2020 Edition!
 * Default to Mattermost 5.20.1
-* Vagarnt fixes
+* Vagrant fixes
 
 2020-01-25 Richard Grainger <harbottle@room3d3.com> - 3.8.0
 * Default to Mattermost 5.19.1

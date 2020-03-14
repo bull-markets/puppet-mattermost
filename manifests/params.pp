@@ -6,7 +6,7 @@ class mattermost::params {
   $pkg = 'mattermost-server'
   $base_url = 'https://releases.mattermost.com'
   $edition = 'team'
-  $version = '5.20.1'
+  $version = '5.21.0'
   $filename = 'mattermost-__EDITION__-__VERSION__-linux-amd64.tar.gz'
   $full_url = '__PLACEHOLDER__'
   $dir = '/opt/mattermost-__VERSION__'
@@ -29,23 +29,12 @@ class mattermost::params {
   $purge_conf = false
   $purge_env_conf = false
   case $::osfamily {
-    'RedHat': {
-      $env_conf = '/etc/sysconfig/mattermost'
-      case $::operatingsystemmajrelease {
-        '6': {
-          $service_template = 'mattermost/sysvinit_el.erb'
-          $service_path     = '/etc/init.d/__SERVICENAME__'
-          $service_provider = ''
-          $service_mode     = '0755'
-        }
-        '7','8': {
-          $service_template = 'mattermost/systemd.erb'
-          $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
-          $service_provider = ''
-          $service_mode     = ''
-        }
-        default: { fail($fail_msg) }
-      }
+    'Archlinux': {
+      $env_conf = '/etc/default/mattermost'
+      $service_template = 'mattermost/systemd.erb'
+      $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
+      $service_provider = 'systemd'
+      $service_mode     = ''
     }
     'Debian': {
       $env_conf = '/etc/default/mattermost'
@@ -77,6 +66,24 @@ class mattermost::params {
             }
             default: { fail($fail_msg) }
           }
+        }
+        default: { fail($fail_msg) }
+      }
+    }
+    'RedHat': {
+      $env_conf = '/etc/sysconfig/mattermost'
+      case $::operatingsystemmajrelease {
+        '6': {
+          $service_template = 'mattermost/sysvinit_el.erb'
+          $service_path     = '/etc/init.d/__SERVICENAME__'
+          $service_provider = ''
+          $service_mode     = '0755'
+        }
+        '7','8': {
+          $service_template = 'mattermost/systemd.erb'
+          $service_path     = '/etc/systemd/system/__SERVICENAME__.service'
+          $service_provider = ''
+          $service_mode     = ''
         }
         default: { fail($fail_msg) }
       }
