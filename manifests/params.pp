@@ -64,6 +64,12 @@ class mattermost::params {
               $service_provider = 'systemd'
               $service_mode     = ''
             }
+            '20.04': {
+              $service_template = 'mattermost/systemd.erb'
+              $service_path     = '/lib/systemd/system/__SERVICENAME__.service'
+              $service_provider = 'systemd'
+              $service_mode     = ''
+            }
             default: { fail($fail_msg) }
           }
         }
